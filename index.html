@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ling Six Sound</title>
+    <title>Ling Six Sound Check</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM7zYl5dox6Lt4Ah96em7w5eau8m/AI6qZ4P4p6" crossorigin="anonymous">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM7zYl5dox6Lt4Ah96em7w5eau8m/AI6qZ4P4p6"
+          crossorigin="anonymous">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -17,7 +20,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
         }
         h1 {
             font-size: 2.5em;
@@ -88,23 +91,70 @@
             outline: none;
             box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
         }
+        #playingMessage {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-top: 20px;
+        }
+        #currentSound {
+            margin-top: 20px;
+            font-size: 2em;
+            color: #ffffff;
+        }
+        #practiceMode {
+            margin-bottom: 20px;
+        }
+        #progressBar {
+            width: 80%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+        #progress {
+            height: 100%;
+            background: #0077b6;
+            width: 0;
+        }
+        @media (max-height: 700px) {
+            body {
+                height: auto;
+                padding: 20px 0;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Ling Six Sound</h1>
+    <h1>Ling Six Sound Check</h1>
     <div class="tabs">
         <div class="tab active" onclick="showTab('practice')">Practice</div>
         <div class="tab" onclick="showTab('test')">Test</div>
     </div>
 
     <div id="practice" class="tab-content">
-        <p>Click on each button to listen to a Ling Six Sound. Please respond by indicating if you can hear the sound.</p>
-        <button class="sound-button" onclick="playSound('ah')">Play "ah" <i class="fas fa-volume-up"></i></button>
-        <button class="sound-button" onclick="playSound('ee')">Play "ee" <i class="fas fa-volume-up"></i></button>
-        <button class="sound-button" onclick="playSound('oo')">Play "oo" <i class="fas fa-volume-up"></i></button>
-        <button class="sound-button" onclick="playSound('sh')">Play "sh" <i class="fas fa-volume-up"></i></button>
-        <button class="sound-button" onclick="playSound('s')">Play "s" <i class="fas fa-volume-up"></i></button>
-        <button class="sound-button" onclick="playSound('mm')">Play "mm" <i class="fas fa-volume-up"></i></button>
+        <p>Please select a practice mode:</p>
+        <select id="practiceMode" onchange="changePracticeMode(this.value)">
+            <option value="manual" selected>Manual Mode</option>
+            <option value="loop">Loop Mode</option>
+        </select>
+
+        <div id="manualMode">
+            <p>Click on each button to listen to a Ling Six Sound. Please respond by indicating if you can hear the sound.</p>
+            <button class="sound-button" onclick="playSound('ah')">Play "ah" <i class="fas fa-volume-up"></i></button>
+            <button class="sound-button" onclick="playSound('ee')">Play "ee" <i class="fas fa-volume-up"></i></button>
+            <button class="sound-button" onclick="playSound('oo')">Play "oo" <i class="fas fa-volume-up"></i></button>
+            <button class="sound-button" onclick="playSound('sh')">Play "sh" <i class="fas fa-volume-up"></i></button>
+            <button class="sound-button" onclick="playSound('s')">Play "s" <i class="fas fa-volume-up"></i></button>
+            <button class="sound-button" onclick="playSound('mm')">Play "mm" <i class="fas fa-volume-up"></i></button>
+        </div>
+
+        <div id="loopMode" class="hidden">
+            <p>The system will randomly play the six sounds. Please listen carefully.</p>
+            <button class="sound-button" onclick="startLoop()">Start Loop Mode <i class="fas fa-play"></i></button>
+            <button class="sound-button" onclick="stopLoop()">Stop Loop Mode <i class="fas fa-stop"></i></button>
+            <div id="currentSound"></div>
+        </div>
     </div>
 
     <div id="test" class="tab-content hidden">
@@ -117,21 +167,50 @@
             <option value="5">5 Options</option>
             <option value="6">6 Options</option>
         </select>
+        <p>Select the number of questions:</p>
+        <select id="questionCount">
+            <option value="10">10 Questions</option>
+            <option value="30">30 Questions</option>
+            <option value="50">50 Questions</option>
+        </select>
         <div style="margin-top: 20px;">
-            <button class="sound-button" id="playTestSound" onclick="playTestSound()">Play Test Sound <i class="fas fa-volume-up"></i></button>
+            <button class="sound-button" id="startTest" onclick="startTest()">Start Test <i class="fas fa-play"></i></button>
+        </div>
+        <div id="progressBar" class="hidden">
+            <div id="progress"></div>
         </div>
         <div id="testButtons" style="margin-top: 20px;"></div>
         <div id="resultMessage" style="margin-top: 20px; font-size: 1.5em; color: #ffffff;"></div>
+        <button id="nextButton" class="sound-button hidden" onclick="nextQuestion()">Next</button>
+        <div id="finalResult" class="hidden" style="margin-top: 20px; font-size: 1.5em; color: #ffffff;"></div>
     </div>
+
+    <div id="playingMessage" class="hidden">Please listen carefully, now playing...</div>
 
     <script>
         const sounds = ['ah', 'ee', 'oo', 'sh', 's', 'mm'];
         let correctSound = '';
         let hasAnswered = false;
+        let currentQuestion = 0;
+        let totalQuestions = 0;
+        let correctAnswers = 0;
+        let incorrectCounts = { 'ah': 0, 'ee': 0, 'oo': 0, 'sh': 0, 's': 0, 'mm': 0 };
+        let testOrder = [];
 
-        function playSound(sound) {
+        function playSound(sound, callback) {
+            const playingMessage = document.getElementById('playingMessage');
+            playingMessage.classList.remove('hidden');
             const audio = new Audio(`sounds/${sound}.wav`);
             audio.play();
+            audio.onended = () => {
+                playingMessage.classList.add('hidden');
+                if (callback) {
+                setTimeout(() => {
+                    callback();
+                    document.getElementById('startTest').classList.remove('hidden');
+                }, 1000); // Wait 1 second before next action
+            }
+            };
         }
 
         function showTab(tabId) {
@@ -139,6 +218,19 @@
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
             document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        function startTest() {
+    document.getElementById('startTest').classList.add('hidden');
+            const optionCount = parseInt(document.getElementById('optionCount').value);
+            totalQuestions = parseInt(document.getElementById('questionCount').value);
+            currentQuestion = 0;
+            correctAnswers = 0;
+            incorrectCounts = { 'ah': 0, 'ee': 0, 'oo': 0, 'sh': 0, 's': 0, 'mm': 0 };
+            testOrder = Array.from({ length: totalQuestions }, () => optionCount);
+            document.getElementById('progressBar').classList.remove('hidden');
+            document.getElementById('finalResult').classList.add('hidden');
+            nextQuestion();
         }
 
         function setOption(optionCount) {
@@ -159,17 +251,18 @@
                 const button = document.createElement('button');
                 button.className = 'sound-button';
                 button.textContent = sound;
-                button.onclick = () => checkAnswer(sound);
+                button.onclick = () => {
+                    if (!hasAnswered) {
+                        checkAnswer(sound);
+                        document.querySelectorAll('#testButtons .sound-button').forEach(btn => btn.disabled = true);
+                    }
+                };
                 testButtonsContainer.appendChild(button);
             });
         }
 
         function playTestSound() {
             if (correctSound && !hasAnswered) {
-                playSound(correctSound);
-            } else if (hasAnswered) {
-                // Generate a new test sound after the user has answered
-                setOption(parseInt(document.getElementById('optionCount').value));
                 playSound(correctSound);
             }
         }
@@ -179,11 +272,78 @@
             if (selectedSound === correctSound) {
                 resultMessage.textContent = 'Correct!';
                 resultMessage.style.color = '#28a745';
+                correctAnswers++;
             } else {
                 resultMessage.textContent = `Incorrect. The correct answer was "${correctSound}".`;
                 resultMessage.style.color = '#dc3545';
+                incorrectCounts[correctSound]++;
             }
             hasAnswered = true;
+            document.getElementById('nextButton').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            document.getElementById('nextButton').classList.add('hidden');
+            document.getElementById('resultMessage').textContent = '';
+            updateProgress();
+            if (currentQuestion <= totalQuestions) {
+                setOption(testOrder[currentQuestion - 1]);
+                playTestSound();
+            } else {
+                showFinalResult();
+            }
+        }
+
+        function updateProgress() {
+            const progress = document.getElementById('progress');
+            progress.style.width = `${(currentQuestion / totalQuestions) * 100}%`;
+        }
+
+        function showFinalResult() {
+            const finalResult = document.getElementById('finalResult');
+            finalResult.classList.remove('hidden');
+            const mostIncorrect = Object.keys(incorrectCounts).reduce((a, b) => incorrectCounts[a] > incorrectCounts[b] ? a : b);
+            finalResult.innerHTML = `Test completed!<br>Correct answers: ${correctAnswers}/${totalQuestions}<br>Most incorrect sound: "${mostIncorrect}" with ${incorrectCounts[mostIncorrect]} errors.`;
+        }
+
+        function changePracticeMode(mode) {
+            const manualMode = document.getElementById('manualMode');
+            const loopMode = document.getElementById('loopMode');
+            if (mode === 'manual') {
+                manualMode.classList.remove('hidden');
+                loopMode.classList.add('hidden');
+            } else if (mode === 'loop') {
+                manualMode.classList.add('hidden');
+                loopMode.classList.remove('hidden');
+            }
+        }
+
+        function startLoop() {
+            if (isLooping) return;
+            isLooping = true;
+            loopSounds = shuffleArray([...sounds]);
+            playNextSound();
+        }
+
+        function stopLoop() {
+            isLooping = false;
+            loopSounds = [];
+            document.getElementById('currentSound').textContent = '';
+        }
+
+        function playNextSound() {
+            if (!isLooping || loopSounds.length === 0) {
+                isLooping = false;
+                return;
+            }
+            const sound = loopSounds.shift();
+            document.getElementById('currentSound').textContent = `Now playing: "${sound}"`;
+            playSound(sound, playNextSound);
+        }
+
+        function shuffleArray(array) {
+            return array.sort(() => Math.random() - 0.5);
         }
     </script>
 </body>
