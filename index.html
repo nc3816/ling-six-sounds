@@ -101,9 +101,6 @@
             font-size: 2em;
             color: #ffffff;
         }
-        #practiceMode {
-            margin-bottom: 20px;
-        }
         #progressBar {
             width: 80%;
             height: 20px;
@@ -117,11 +114,12 @@
             background: #0077b6;
             width: 0;
         }
-        @media (max-height: 700px) {
-            body {
-                height: auto;
-                padding: 20px 0;
-            }
+        .test-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -158,31 +156,54 @@
     </div>
 
     <div id="test" class="tab-content hidden">
-        <p>Select the number of options for the test:</p>
-        <select id="optionCount" onchange="setOption(parseInt(this.value))">
-            <option value="" disabled selected>Select number of options</option>
-            <option value="2">2 Options</option>
-            <option value="3">3 Options</option>
-            <option value="4">4 Options</option>
-            <option value="5">5 Options</option>
-            <option value="6">6 Options</option>
+        <p>Select the type of test:</p>
+        <select id="testType" onchange="selectTestType(this.value)">
+            <option value="" disabled selected>Select test type</option>
+            <option value="multipleChoice">Multiple Choice</option>
+            <option value="sameOrDifferent">Same or Different</option>
         </select>
-        <p>Select the number of questions:</p>
-        <select id="questionCount">
-            <option value="10">10 Questions</option>
-            <option value="30">30 Questions</option>
-            <option value="50">50 Questions</option>
-        </select>
-        <div style="margin-top: 20px;">
-            <button class="sound-button" id="startTest" onclick="startTest()">Start Test <i class="fas fa-play"></i></button>
+
+        <div id="multipleChoiceTest" class="hidden">
+            <div class="test-options">
+                <div>
+                    <p>Select the number of options for the test:</p>
+                    <select id="optionCount">
+                        <option value="2" selected>2 Options</option>
+                        <option value="3">3 Options</option>
+                        <option value="4">4 Options</option>
+                        <option value="5">5 Options</option>
+                        <option value="6">6 Options</option>
+                    </select>
+                </div>
+                <div>
+                    <p>Select the number of questions:</p>
+                    <select id="questionCount">
+                        <option value="10">10 Questions</option>
+                        <option value="30">30 Questions</option>
+                        <option value="50">50 Questions</option>
+                    </select>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <button class="sound-button" id="startTest" onclick="startTest()">Start Test <i class="fas fa-play"></i></button>
+                <button class="sound-button hidden" id="exitTest" onclick="exitTest()" style="position: fixed; bottom: 20px; right: 20px;">Exit Test <i class="fas fa-stop"></i></button>
+            </div>
+            <div id="progressBar" class="hidden">
+                <div id="progress"></div>
+            </div>
+            <div id="testButtons" style="margin-top: 20px;"></div>
+            <div id="resultMessage" style="margin-top: 20px; font-size: 1.5em; color: #ffffff;"></div>
+            <button id="nextButton" class="sound-button hidden" onclick="nextQuestion()">Next</button>
+            <div id="finalResult" class="hidden" style="margin-top: 20px; font-size: 1.5em; color: #ffffff;"></div>
         </div>
-        <div id="progressBar" class="hidden">
-            <div id="progress"></div>
+
+        <div id="sameOrDifferentTest" class="hidden">
+            <p>Same or Different Listening Practice:</p>
+            <button class="sound-button" onclick="startSameOrDifferent()">Start Practice <i class="fas fa-play"></i></button>
+            <div id="pairingMessage" class="hidden">Please listen carefully, now playing...</div>
+            <div id="sameOrDifferentButtons" style="margin-top: 20px;"></div>
+            <div id="sameOrDifferentResult" style="margin-top: 20px; font-size: 1.5em; color: #ffffff;"></div>
         </div>
-        <div id="testButtons" style="margin-top: 20px;"></div>
-        <div id="resultMessage" style="margin-top: 20px; font-size: 1.5em; color: #ffffff;"></div>
-        <button id="nextButton" class="sound-button hidden" onclick="nextQuestion()">Next</button>
-        <div id="finalResult" class="hidden" style="margin-top: 20px; font-size: 1.5em; color: #ffffff;"></div>
     </div>
 
     <div id="playingMessage" class="hidden">Please listen carefully, now playing...</div>
@@ -196,6 +217,9 @@
         let correctAnswers = 0;
         let incorrectCounts = { 'ah': 0, 'ee': 0, 'oo': 0, 'sh': 0, 's': 0, 'mm': 0 };
         let testOrder = [];
+        let isLooping = false;
+        let replayCount = 0;
+        let replayUsed = 0;
 
         function playSound(sound, callback) {
             const playingMessage = document.getElementById('playingMessage');
@@ -205,11 +229,10 @@
             audio.onended = () => {
                 playingMessage.classList.add('hidden');
                 if (callback) {
-                setTimeout(() => {
-                    callback();
-                    document.getElementById('startTest').classList.remove('hidden');
-                }, 1000); // Wait 1 second before next action
-            }
+                    setTimeout(() => {
+                        callback();
+                    }, 1000);
+                }
             };
         }
 
@@ -220,8 +243,19 @@
             document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
         }
 
+        function selectTestType(testType) {
+            document.getElementById('multipleChoiceTest').classList.add('hidden');
+            document.getElementById('sameOrDifferentTest').classList.add('hidden');
+            if (testType === 'multipleChoice') {
+                document.getElementById('multipleChoiceTest').classList.remove('hidden');
+            } else if (testType === 'sameOrDifferent') {
+                document.getElementById('sameOrDifferentTest').classList.remove('hidden');
+            }
+        }
+
         function startTest() {
-    document.getElementById('startTest').classList.add('hidden');
+            document.getElementById('exitTest').classList.remove('hidden');
+            document.getElementById('startTest').classList.add('hidden');
             const optionCount = parseInt(document.getElementById('optionCount').value);
             totalQuestions = parseInt(document.getElementById('questionCount').value);
             currentQuestion = 0;
@@ -231,6 +265,10 @@
             document.getElementById('progressBar').classList.remove('hidden');
             document.getElementById('finalResult').classList.add('hidden');
             nextQuestion();
+        }
+
+        function exitTest() {
+            location.reload();
         }
 
         function setOption(optionCount) {
@@ -243,7 +281,7 @@
             testButtonsContainer.innerHTML = '';
             resultMessage.textContent = '';
             hasAnswered = false;
-            
+
             const shuffledSounds = sounds.sort(() => 0.5 - Math.random()).slice(0, optionCount);
             correctSound = shuffledSounds[Math.floor(Math.random() * shuffledSounds.length)];
 
@@ -307,43 +345,44 @@
             finalResult.innerHTML = `Test completed!<br>Correct answers: ${correctAnswers}/${totalQuestions}<br>Most incorrect sound: "${mostIncorrect}" with ${incorrectCounts[mostIncorrect]} errors.`;
         }
 
-        function changePracticeMode(mode) {
-            const manualMode = document.getElementById('manualMode');
-            const loopMode = document.getElementById('loopMode');
-            if (mode === 'manual') {
-                manualMode.classList.remove('hidden');
-                loopMode.classList.add('hidden');
-            } else if (mode === 'loop') {
-                manualMode.classList.add('hidden');
-                loopMode.classList.remove('hidden');
+        function startSameOrDifferent() {
+            const soundPair = [sounds[Math.floor(Math.random() * sounds.length)], sounds[Math.floor(Math.random() * sounds.length)]];
+            document.getElementById('pairingMessage').classList.remove('hidden');
+            document.getElementById('pairingMessage').textContent = `Playing two sounds...
+Playing first sound...`;
+            playSound(soundPair[0], () => {
+                document.getElementById('pairingMessage').textContent = `Playing second sound...`;
+                playSound(soundPair[1], () => {
+                    document.getElementById('pairingMessage').classList.add('hidden');
+                    const sameOrDifferentButtons = document.getElementById('sameOrDifferentButtons');
+                    sameOrDifferentButtons.innerHTML = '';
+                    const sameButton = document.createElement('button');
+                    sameButton.className = 'sound-button';
+                    sameButton.textContent = 'Same';
+                    sameButton.onclick = () => {
+                        checkSameOrDifferent(soundPair, true);
+                    };
+                    const differentButton = document.createElement('button');
+                    differentButton.className = 'sound-button';
+                    differentButton.textContent = 'Different';
+                    differentButton.onclick = () => {
+                        checkSameOrDifferent(soundPair, false);
+                    };
+                    sameOrDifferentButtons.appendChild(sameButton);
+                    sameOrDifferentButtons.appendChild(differentButton);
+                });
+            });
+        }
+
+        function checkSameOrDifferent(soundPair, isSame) {
+            const sameOrDifferentResult = document.getElementById('sameOrDifferentResult');
+            if ((soundPair[0] === soundPair[1] && isSame) || (soundPair[0] !== soundPair[1] && !isSame)) {
+                sameOrDifferentResult.textContent = 'Correct!';
+                sameOrDifferentResult.style.color = '#28a745';
+            } else {
+                sameOrDifferentResult.textContent = 'Incorrect!';
+                sameOrDifferentResult.style.color = '#dc3545';
             }
-        }
-
-        function startLoop() {
-            if (isLooping) return;
-            isLooping = true;
-            loopSounds = shuffleArray([...sounds]);
-            playNextSound();
-        }
-
-        function stopLoop() {
-            isLooping = false;
-            loopSounds = [];
-            document.getElementById('currentSound').textContent = '';
-        }
-
-        function playNextSound() {
-            if (!isLooping || loopSounds.length === 0) {
-                isLooping = false;
-                return;
-            }
-            const sound = loopSounds.shift();
-            document.getElementById('currentSound').textContent = `Now playing: "${sound}"`;
-            playSound(sound, playNextSound);
-        }
-
-        function shuffleArray(array) {
-            return array.sort(() => Math.random() - 0.5);
         }
     </script>
 </body>
