@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- 元数据和样式 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ling Six Sound Check</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
           integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM7zYl5dox6Lt4Ah96em7w5eau8m/AI6qZ4P4p6"
           crossorigin="anonymous">
     <style>
+        /* 样式 */
         body {
             font-family: 'Roboto', sans-serif;
             text-align: center;
@@ -18,11 +21,44 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            padding-top: 60px; /* 调整以适应固定导航栏 */
             min-height: 100vh;
+        }
+        nav {
+            background: #ffffff;
+            width: 100%;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            justify-content: flex-start;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            color: #0077b6;
+            font-weight: bold;
+            transition: background 0.3s, color 0.3s;
+        }
+        .nav-item:hover {
+            background: #0077b6;
+            color: #ffffff;
+        }
+        .nav-item.active {
+            background: #0077b6;
+            color: #ffffff;
         }
         h1 {
             font-size: 2.5em;
+            margin-top: 20px;
             margin-bottom: 20px;
             color: #ffffff;
         }
@@ -31,25 +67,38 @@
             margin-bottom: 30px;
             color: #ffffff;
         }
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+        .tab-content {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
         }
-        .tab {
-            margin: 0 15px;
-            padding: 10px 20px;
+        .hidden {
+            display: none;
+        }
+        .home-buttons {
+            margin-top: 20px;
+        }
+        .home-button {
+            margin: 10px;
+            padding: 15px 40px;
+            font-size: 1.1em;
+            font-weight: bold;
             cursor: pointer;
+            border: none;
+            border-radius: 50px;
             background: #ffffff;
             color: #0077b6;
-            border-radius: 10px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
-        .tab.active {
+        .home-button:hover {
             background: #0077b6;
             color: #ffffff;
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-3px);
         }
+        /* 以下是 practice 和 test 部分的样式 */
         .sound-button {
             margin: 10px;
             padding: 15px 40px;
@@ -71,9 +120,6 @@
         }
         .sound-button:active {
             transform: translateY(1px);
-        }
-        .hidden {
-            display: none;
         }
         select {
             padding: 10px;
@@ -123,26 +169,43 @@
         .description-container {
             max-width: 800px;
             margin: 0 auto;
-            text-align: justify; /* 两端对齐 */
-        }   
+            text-align: justify;
+        }
     </style>
 </head>
 <body>
+    <!-- 导航菜单 -->
+    <nav>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="showTab('home')">Home</li>
+            <li class="nav-item" onclick="showTab('practice')">Practice</li>
+            <li class="nav-item" onclick="showTab('test')">Test</li>
+        </ul>
+    </nav>
+
     <h1>Ling Six Sound Check</h1>
-    <div id="description" class="description-container">
-        <p>
-            The Ling Six Sounds Check is a simple yet effective tool used to assess an individual's ability to hear and distinguish a range of speech frequencies essential for understanding spoken language. It involves six distinct sounds: "ah," "ee," "oo," "sh," "s," and "mm," which represent low to high frequencies of speech.
-        </p>
-        <p>
-            Welcome to the Ling Six Sounds Check Online version! This interactive platform allows you to practice and test your hearing abilities conveniently from anywhere. We hope you enjoy using this tool and find it helpful in improving your auditory skills.
-        </p>
-    </div>
-    <div class="tabs">
-        <div class="tab active" onclick="showTab('practice')">Practice</div>
-        <div class="tab" onclick="showTab('test')">Test</div>
+
+    <!-- 首页 -->
+    <div id="home" class="tab-content">
+        <div id="description" class="description-container">
+            <p>
+                The Ling Six Sounds Check is a simple yet effective tool used to assess an individual's ability to hear and distinguish a range of speech frequencies essential for understanding spoken language. It involves six distinct sounds: "ah," "ee," "oo," "sh," "s," and "mm," which represent low to high frequencies of speech.
+            </p>
+            <p>
+                Welcome to the Ling Six Sounds Check Online version! This interactive platform allows you to practice and test your hearing abilities conveniently from anywhere. We hope you enjoy using this tool and find it helpful in improving your auditory skills.
+            </p>
+            <p>
+                Would you like to try?
+            </p>
+            <div class="home-buttons">
+                <button class="home-button" onclick="showTab('practice')">Go to Practice</button>
+                <button class="home-button" onclick="showTab('test')">Go to Test</button>
+            </div>
+        </div>
     </div>
 
-    <div id="practice" class="tab-content">
+    <!-- Practice 页面 -->
+    <div id="practice" class="tab-content hidden">
         <p>Please select a practice mode:</p>
         <select id="practiceMode" onchange="changePracticeMode(this.value)">
             <option value="manual" selected>Manual Mode</option>
@@ -167,6 +230,7 @@
         </div>
     </div>
 
+    <!-- Test 页面 -->
     <div id="test" class="tab-content hidden">
         <p>Select the type of test:</p>
         <select id="testType" onchange="selectTestType(this.value)">
@@ -221,6 +285,7 @@
     <div id="playingMessage" class="hidden">Please listen carefully, now playing...</div>
 
     <script>
+        // 声音列表
         const sounds = ['ah', 'ee', 'oo', 'sh', 's', 'mm'];
         let correctSound = '';
         let currentQuestion = 0;
@@ -241,17 +306,16 @@
         }
 
         function showTab(tabId) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
-            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
-    
-            // Hide or show description based on the selected tab
-            const description = document.getElementById('description');
-            if (tabId === 'test') {
-                description.style.display = 'none'; // Hide description when "test" tab is active
+            document.querySelector(`.nav-item[onclick="showTab('${tabId}')"]`).classList.add('active');
+
+            // 如果是 Home 页面，显示描述
+            if (tabId === 'home') {
+                document.getElementById('description').style.display = 'block';
             } else {
-                description.style.display = 'block'; // Show description for other tabs
+                document.getElementById('description').style.display = 'none';
             }
         }
 
@@ -407,6 +471,11 @@
                 resultMessage.style.color = '#dc3545';
             }
         }
+
+        // 页面加载时显示首页
+        document.addEventListener('DOMContentLoaded', () => {
+            showTab('home');
+        });
     </script>
 </body>
 </html>
