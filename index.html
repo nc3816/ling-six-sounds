@@ -5,30 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ling Six Sound Check</title>
+    <!-- 引入谷歌字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <!-- 引入 Font Awesome 图标库 -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-          integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM7zYl5dox6Lt4Ah96em7w5eau8m/AI6qZ4P4p6"
+          integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM7zYl5eau8m/AI6qZ4P4p6"
           crossorigin="anonymous">
     <style>
-        /* 样式 */
+        /* 全局样式 */
         body {
             font-family: 'Roboto', sans-serif;
             text-align: center;
-            background: linear-gradient(to right, #83a4d4, #b6fbff);
-            color: #333;
+            background-color: #121212; /* 深色背景 */
+            color: #e0e0e0; /* 浅色文字 */
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            padding-top: 60px; /* 调整以适应固定导航栏 */
+            padding-top: 70px; /* 调整以适应固定导航栏 */
             min-height: 100vh;
         }
+        /* 导航菜单样式 */
         nav {
-            background: #ffffff;
+            background-color: #1f1f1f; /* 导航栏深色背景 */
             width: 100%;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
             position: fixed;
             top: 0;
             left: 0;
@@ -37,35 +40,50 @@
         .nav-menu {
             list-style: none;
             display: flex;
-            justify-content: flex-start;
+            justify-content: flex-end; /* 右侧对齐导航菜单 */
             margin: 0;
-            padding: 0;
+            padding: 0 20px;
         }
         .nav-item {
             padding: 15px 20px;
             cursor: pointer;
-            color: #0077b6;
+            color: #e0e0e0;
             font-weight: bold;
             transition: background 0.3s, color 0.3s;
+            text-transform: uppercase;
+            position: relative;
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0%;
+            height: 2px;
+            background-color: #6200ea; /* 紫色下划线 */
+            transition: width 0.3s;
+        }
+        .nav-item:hover::after {
+            width: 100%;
         }
         .nav-item:hover {
-            background: #0077b6;
-            color: #ffffff;
+            color: #bb86fc; /* 浅紫色 */
         }
         .nav-item.active {
-            background: #0077b6;
-            color: #ffffff;
+            color: #bb86fc;
         }
         h1 {
             font-size: 2.5em;
             margin-top: 20px;
             margin-bottom: 20px;
-            color: #ffffff;
+            color: #bb86fc; /* 浅紫色标题 */
         }
         p {
             font-size: 1.2em;
             margin-bottom: 30px;
-            color: #ffffff;
+            color: #e0e0e0;
+            line-height: 1.6;
         }
         .tab-content {
             width: 100%;
@@ -76,100 +94,97 @@
         .hidden {
             display: none;
         }
+        /* 首页按钮样式 */
         .home-buttons {
-            margin-top: 20px;
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
         }
         .home-button {
             margin: 10px;
-            padding: 15px 40px;
-            font-size: 1.1em;
+            padding: 15px 50px;
+            font-size: 1.2em;
             font-weight: bold;
             cursor: pointer;
-            border: none;
-            border-radius: 50px;
-            background: #ffffff;
-            color: #0077b6;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #6200ea;
+            border-radius: 30px;
+            background: transparent;
+            color: #e0e0e0;
             transition: all 0.3s ease;
         }
         .home-button:hover {
-            background: #0077b6;
+            background: #6200ea;
+            border-color: #bb86fc;
             color: #ffffff;
-            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
-            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(98, 0, 234, 0.5);
+            transform: translateY(-2px);
         }
-        /* 以下是 practice 和 test 部分的样式 */
-        .sound-button {
-            margin: 10px;
-            padding: 15px 40px;
-            font-size: 1.1em;
+        /* 按钮和选择器的通用样式 */
+        .sound-button, select {
+            background-color: #1f1f1f;
+            color: #e0e0e0;
+            border: 2px solid #6200ea;
+            border-radius: 30px;
+            padding: 15px 30px;
+            font-size: 1em;
             font-weight: bold;
             cursor: pointer;
-            border: none;
-            border-radius: 50px;
-            background: #ffffff;
-            color: #0077b6;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            margin: 10px;
         }
-        .sound-button:hover {
-            background: #0077b6;
+        .sound-button:hover, select:hover {
+            background-color: #6200ea;
+            border-color: #bb86fc;
             color: #ffffff;
-            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
-            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(98, 0, 234, 0.5);
+            transform: translateY(-2px);
         }
         .sound-button:active {
             transform: translateY(1px);
         }
-        select {
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid #0077b6;
-            font-size: 1em;
-            background-color: #ffffff;
-            color: #0077b6;
-            cursor: pointer;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        select:focus {
-            outline: none;
-            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
-        }
-        #playingMessage {
-            font-size: 1.5em;
-            color: #ffffff;
-            margin-top: 20px;
-        }
-        #currentSound {
-            margin-top: 20px;
-            font-size: 2em;
-            color: #ffffff;
-        }
+        /* 进度条样式 */
         #progressBar {
             width: 80%;
             height: 20px;
-            background: #e0e0e0;
+            background: #3c3c3c;
             border-radius: 10px;
             overflow: hidden;
             margin: 20px auto;
         }
         #progress {
             height: 100%;
-            background: #0077b6;
+            background: linear-gradient(90deg, #6200ea, #bb86fc);
             width: 0;
         }
+        /* 测试选项样式 */
         .test-options {
             display: flex;
+            flex-wrap: wrap;
             gap: 15px;
             justify-content: center;
             align-items: center;
             margin-bottom: 20px;
         }
+        /* 描述容器样式 */
         .description-container {
             max-width: 800px;
             margin: 0 auto;
             text-align: justify;
+        }
+        /* 响应式设计 */
+        @media (max-width: 600px) {
+            .nav-item {
+                padding: 10px 15px;
+            }
+            .home-buttons {
+                flex-direction: column;
+            }
+            .home-button {
+                width: 80%;
+                margin: 10px auto;
+            }
         }
     </style>
 </head>
@@ -194,7 +209,7 @@
             <p>
                 Welcome to the Ling Six Sounds Check Online version! This interactive platform allows you to practice and test your hearing abilities conveniently from anywhere. We hope you enjoy using this tool and find it helpful in improving your auditory skills.
             </p>
-            <p>
+            <p style="text-align: center; margin-top: 40px; font-size: 1.5em; color: #bb86fc;">
                 Would you like to try?
             </p>
             <div class="home-buttons">
@@ -268,9 +283,9 @@
                 <div id="progress"></div>
             </div>
             <div id="testButtons" style="margin-top: 20px;"></div>
-            <div id="resultMessage" style="margin-top: 20px; font-size: 1.5em; color: #ffffff;"></div>
+            <div id="resultMessage" style="margin-top: 20px; font-size: 1.5em;"></div>
             <button id="nextButton" class="sound-button hidden" onclick="nextQuestion()">Next</button>
-            <div id="finalResult" class="hidden" style="margin-top: 20px; font-size: 1.5em; color: #ffffff;"></div>
+            <div id="finalResult" class="hidden" style="margin-top: 20px; font-size: 1.5em;"></div>
         </div>
 
         <div id="sameOrDifferentTest" class="hidden">
@@ -278,7 +293,7 @@
             <button class="sound-button" onclick="startSameOrDifferent()">Start Practice <i class="fas fa-play"></i></button>
             <div id="pairingMessage" class="hidden">Please listen carefully, now playing...</div>
             <div id="sameOrDifferentButtons" style="margin-top: 20px;"></div>
-            <div id="sameOrDifferentResult" style="margin-top: 20px; font-size: 1.5em; color: #ffffff;"></div>
+            <div id="sameOrDifferentResult" style="margin-top: 20px; font-size: 1.5em;"></div>
         </div>
     </div>
 
@@ -410,11 +425,11 @@
             const resultMessage = document.getElementById('resultMessage');
             if (selectedSound === correctSound) {
                 resultMessage.textContent = 'Correct!';
-                resultMessage.style.color = '#28a745';
+                resultMessage.style.color = '#03dac5'; /* 绿色 */
                 correctAnswers++;
             } else {
                 resultMessage.textContent = `Incorrect. The correct answer was "${correctSound}".`;
-                resultMessage.style.color = '#dc3545';
+                resultMessage.style.color = '#cf6679'; /* 红色 */
                 incorrectCounts[correctSound]++;
             }
             document.getElementById('nextButton').classList.remove('hidden');
@@ -465,10 +480,10 @@
             const resultMessage = document.getElementById('sameOrDifferentResult');
             if ((soundPair[0] === soundPair[1] && isSame) || (soundPair[0] !== soundPair[1] && !isSame)) {
                 resultMessage.textContent = 'Correct!';
-                resultMessage.style.color = '#28a745';
+                resultMessage.style.color = '#03dac5'; /* 绿色 */
             } else {
                 resultMessage.textContent = 'Incorrect!';
-                resultMessage.style.color = '#dc3545';
+                resultMessage.style.color = '#cf6679'; /* 红色 */
             }
         }
 
