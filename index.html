@@ -145,7 +145,7 @@
             transform: translateY(1px);
         }
         /* 进度条样式 */
-        #progressBar {
+        #progressBar, #sameOrDifferentProgressBar {
             width: 80%;
             height: 20px;
             background: #3c3c3c;
@@ -153,7 +153,7 @@
             overflow: hidden;
             margin: 20px auto;
         }
-        #progress {
+        #progress, #sameOrDifferentProgress {
             height: 100%;
             background: linear-gradient(90deg, #6200ea, #bb86fc);
             width: 0;
@@ -173,6 +173,16 @@
             margin: 0 auto;
             text-align: justify;
         }
+        /* 手动模式按钮容器样式 */
+        .sound-button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .sound-button-container .sound-button {
+            flex: 0 0 calc(45% - 20px);
+        }
         /* 响应式设计 */
         @media (max-width: 600px) {
             .nav-item {
@@ -184,6 +194,9 @@
             .home-button {
                 width: 80%;
                 margin: 10px auto;
+            }
+            .sound-button-container .sound-button {
+                flex: 0 0 calc(100% - 20px);
             }
         }
     </style>
@@ -229,50 +242,68 @@
 
         <div id="manualMode">
             <p>Click on each button to listen to a Ling Six Sound.</p>
-            <button class="sound-button" onclick="playSound('ah')">Play "ah" <i class="fas fa-volume-up"></i></button>
-            <button class="sound-button" onclick="playSound('ee')">Play "ee" <i class="fas fa-volume-up"></i></button>
-            <button class="sound-button" onclick="playSound('oo')">Play "oo" <i class="fas fa-volume-up"></i></button>
-            <button class="sound-button" onclick="playSound('sh')">Play "sh" <i class="fas fa-volume-up"></i></button>
-            <button class="sound-button" onclick="playSound('s')">Play "s" <i class="fas fa-volume-up"></i></button>
-            <button class="sound-button" onclick="playSound('mm')">Play "mm" <i class="fas fa-volume-up"></i></button>
+            <div class="sound-button-container">
+                <button class="sound-button" onclick="playSound('ah')">Play "ah" <i class="fas fa-volume-up"></i></button>
+                <button class="sound-button" onclick="playSound('ee')">Play "ee" <i class="fas fa-volume-up"></i></button>
+                <button class="sound-button" onclick="playSound('oo')">Play "oo" <i class="fas fa-volume-up"></i></button>
+                <button class="sound-button" onclick="playSound('sh')">Play "sh" <i class="fas fa-volume-up"></i></button>
+                <button class="sound-button" onclick="playSound('s')">Play "s" <i class="fas fa-volume-up"></i></button>
+                <button class="sound-button" onclick="playSound('mm')">Play "mm" <i class="fas fa-volume-up"></i></button>
+            </div>
         </div>
 
         <div id="loopMode" class="hidden">
             <p>The system will randomly play the six sounds. Please listen carefully.</p>
             <button class="sound-button" onclick="startLoop()">Start Loop Mode <i class="fas fa-play"></i></button>
             <button class="sound-button" onclick="stopLoop()">Stop Loop Mode <i class="fas fa-stop"></i></button>
-            <div id="currentSound"></div>
+            <div id="currentSound" style="margin-top: 20px; font-size: 1.5em; color: #bb86fc;"></div>
         </div>
     </div>
 
     <!-- Test 页面 -->
     <div id="test" class="tab-content hidden">
-        <p>Select the type of test:</p>
-        <select id="testType" onchange="selectTestType(this.value)">
-            <option value="" disabled selected>Select test type</option>
-            <option value="multipleChoice">Multiple Choice</option>
-            <option value="sameOrDifferent">Same or Different</option>
-        </select>
+        <!-- 测试类型选择 -->
+        <div id="testTypeSelection">
+            <p>Select the type of test:</p>
+            <select id="testType">
+                <option value="" disabled selected>Select test type</option>
+                <option value="multipleChoice">Multiple Choice</option>
+                <option value="sameOrDifferent">Same or Different</option>
+            </select>
+        </div>
 
+        <!-- Multiple Choice 测试 -->
         <div id="multipleChoiceTest" class="hidden">
-            <div class="test-options">
-                <div>
-                    <p>Select the number of options for the test:</p>
-                    <select id="optionCount">
-                        <option value="2" selected>2 Options</option>
-                        <option value="3">3 Options</option>
-                        <option value="4">4 Options</option>
-                        <option value="5">5 Options</option>
-                        <option value="6">6 Options</option>
-                    </select>
-                </div>
-                <div>
-                    <p>Select the number of questions:</p>
-                    <select id="questionCount">
-                        <option value="10">10 Questions</option>
-                        <option value="30">30 Questions</option>
-                        <option value="50">50 Questions</option>
-                    </select>
+            <!-- 显示当前测试类型 -->
+            <div id="currentTestType" style="font-size: 1.2em; color: #bb86fc; margin-top: 20px;"></div>
+            <div id="testSettings">
+                <div class="test-options">
+                    <div>
+                        <p>Select the number of options for the test:</p>
+                        <select id="optionCount">
+                            <option value="2" selected>2 Options</option>
+                            <option value="3">3 Options</option>
+                            <option value="4">4 Options</option>
+                            <option value="5">5 Options</option>
+                            <option value="6">6 Options</option>
+                        </select>
+                    </div>
+                    <div>
+                        <p>Select the number of questions:</p>
+                        <select id="questionCount">
+                            <option value="10">10 Questions</option>
+                            <option value="30">30 Questions</option>
+                            <option value="50">50 Questions</option>
+                        </select>
+                    </div>
+                    <div>
+                        <p>Select the number of replays allowed per question:</p>
+                        <select id="replayCount">
+                            <option value="1">1 Time</option>
+                            <option value="2">2 Times</option>
+                            <option value="unlimited" selected>Unlimited</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <div style="margin-top: 20px;">
@@ -284,16 +315,51 @@
             </div>
             <div id="testButtons" style="margin-top: 20px;"></div>
             <div id="resultMessage" style="margin-top: 20px; font-size: 1.5em;"></div>
+            <button id="replayButton" class="sound-button hidden" onclick="replaySound()">Replay Sound <i class="fas fa-redo"></i></button>
+            <!-- 添加用于显示重播次数的消息 -->
+            <div id="replayMessage" style="margin-top: 10px; font-size: 1em; color: #03dac5;"></div>
             <button id="nextButton" class="sound-button hidden" onclick="nextQuestion()">Next</button>
             <div id="finalResult" class="hidden" style="margin-top: 20px; font-size: 1.5em;"></div>
         </div>
 
+        <!-- Same or Different 测试 -->
         <div id="sameOrDifferentTest" class="hidden">
-            <p>Same or Different Listening Practice:</p>
-            <button class="sound-button" onclick="startSameOrDifferent()">Start Practice <i class="fas fa-play"></i></button>
+            <!-- 显示当前测试类型 -->
+            <div id="currentTestTypeSameOrDifferent" style="font-size: 1.2em; color: #bb86fc; margin-top: 20px;"></div>
+            <div id="sameOrDifferentSettings">
+                <div class="test-options">
+                    <div>
+                        <p>Select the number of questions:</p>
+                        <select id="sameOrDifferentQuestionCount">
+                            <option value="10">10 Questions</option>
+                            <option value="30">30 Questions</option>
+                            <option value="50">50 Questions</option>
+                        </select>
+                    </div>
+                    <div>
+                        <p>Select the number of replays allowed per question:</p>
+                        <select id="sameOrDifferentReplayCount">
+                            <option value="1">1 Time</option>
+                            <option value="2">2 Times</option>
+                            <option value="unlimited" selected>Unlimited</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 20px;">
+                <button class="sound-button" id="startSameOrDifferentTest" onclick="startSameOrDifferentTest()">Start Test <i class="fas fa-play"></i></button>
+                <button class="sound-button hidden" id="exitSameOrDifferentTest" onclick="exitTest()" style="position: fixed; bottom: 20px; right: 20px;">Exit Test <i class="fas fa-stop"></i></button>
+            </div>
+            <div id="sameOrDifferentProgressBar" class="hidden">
+                <div id="sameOrDifferentProgress"></div>
+            </div>
             <div id="pairingMessage" class="hidden">Please listen carefully, now playing...</div>
+            <button id="sameOrDifferentReplayButton" class="sound-button hidden" onclick="replaySameOrDifferent()">Replay Sound <i class="fas fa-redo"></i></button>
+            <div id="sameOrDifferentReplayMessage" style="margin-top: 10px; font-size: 1em; color: #03dac5;"></div>
             <div id="sameOrDifferentButtons" style="margin-top: 20px;"></div>
             <div id="sameOrDifferentResult" style="margin-top: 20px; font-size: 1.5em;"></div>
+            <button id="sameOrDifferentNextButton" class="sound-button hidden" onclick="nextSameOrDifferent()">Next</button>
+            <div id="sameOrDifferentFinalResult" class="hidden" style="margin-top: 20px; font-size: 1.5em;"></div>
         </div>
     </div>
 
@@ -308,6 +374,16 @@
         let correctAnswers = 0;
         let incorrectCounts = { 'ah': 0, 'ee': 0, 'oo': 0, 'sh': 0, 's': 0, 'mm': 0 };
         let isLooping = false;
+        let maxReplays = 'unlimited';
+        let replayUsed = 0;
+
+        // Same or Different 相关变量
+        let sameOrDifferentQuestions = 0;
+        let sameOrDifferentCurrentQuestion = 0;
+        let sameOrDifferentMaxReplays = 'unlimited';
+        let sameOrDifferentReplayUsed = 0;
+        let sameOrDifferentCorrectAnswers = 0;
+        let currentSoundPair = [];
 
         function playSound(sound, callback) {
             const playingMessage = document.getElementById('playingMessage');
@@ -332,6 +408,53 @@
             } else {
                 document.getElementById('description').style.display = 'none';
             }
+
+            // 当点击 Test 菜单时，重置测试页面
+            if (tabId === 'test') {
+                resetTestPage();
+            }
+        }
+
+        function resetTestPage() {
+            // 显示测试类型选择
+            document.getElementById('testTypeSelection').classList.remove('hidden');
+
+            // 隐藏测试内容
+            document.getElementById('multipleChoiceTest').classList.add('hidden');
+            document.getElementById('sameOrDifferentTest').classList.add('hidden');
+
+            // 重置 Multiple Choice 测试相关元素
+            document.getElementById('progressBar').classList.add('hidden');
+            document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('startTest').classList.remove('hidden');
+            document.getElementById('exitTest').classList.add('hidden');
+            document.getElementById('testSettings').classList.remove('hidden');
+            document.getElementById('resultMessage').textContent = '';
+            document.getElementById('nextButton').classList.add('hidden');
+            document.getElementById('replayButton').classList.add('hidden');
+            document.getElementById('replayMessage').textContent = '';
+            document.getElementById('testButtons').innerHTML = '';
+            document.getElementById('currentTestType').textContent = '';
+            currentQuestion = 0;
+            correctAnswers = 0;
+
+            // 重置 Same or Different 测试相关元素
+            document.getElementById('sameOrDifferentProgressBar').classList.add('hidden');
+            document.getElementById('sameOrDifferentFinalResult').classList.add('hidden');
+            document.getElementById('startSameOrDifferentTest').classList.remove('hidden');
+            document.getElementById('exitSameOrDifferentTest').classList.add('hidden');
+            document.getElementById('sameOrDifferentSettings').classList.remove('hidden');
+            document.getElementById('sameOrDifferentResult').textContent = '';
+            document.getElementById('sameOrDifferentNextButton').classList.add('hidden');
+            document.getElementById('sameOrDifferentReplayButton').classList.add('hidden');
+            document.getElementById('sameOrDifferentReplayMessage').textContent = '';
+            document.getElementById('sameOrDifferentButtons').innerHTML = '';
+            document.getElementById('currentTestTypeSameOrDifferent').textContent = '';
+            sameOrDifferentCurrentQuestion = 0;
+            sameOrDifferentCorrectAnswers = 0;
+
+            // 重置测试类型选择
+            document.getElementById('testType').value = '';
         }
 
         function changePracticeMode(value) {
@@ -354,29 +477,36 @@
 
         function stopLoop() {
             isLooping = false;
+            document.getElementById('currentSound').textContent = '';
         }
 
         function loopSounds() {
             if (!isLooping) return;
             const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+            document.getElementById('currentSound').textContent = `Now playing: "${randomSound}"`;
             playSound(randomSound, () => {
                 if (isLooping) setTimeout(loopSounds, 2000);
             });
         }
 
-        function selectTestType(testType) {
+        // 当选择测试类型时，显示对应的测试设置
+        document.getElementById('testType').addEventListener('change', function () {
+            const testType = this.value;
             document.getElementById('multipleChoiceTest').classList.add('hidden');
             document.getElementById('sameOrDifferentTest').classList.add('hidden');
+
             if (testType === 'multipleChoice') {
                 document.getElementById('multipleChoiceTest').classList.remove('hidden');
             } else if (testType === 'sameOrDifferent') {
                 document.getElementById('sameOrDifferentTest').classList.remove('hidden');
             }
-        }
+        });
 
+        // Multiple Choice 测试相关函数
         function startTest() {
             const optionCount = parseInt(document.getElementById('optionCount').value);
             totalQuestions = parseInt(document.getElementById('questionCount').value);
+            maxReplays = document.getElementById('replayCount').value;
             currentQuestion = 0;
             correctAnswers = 0;
             incorrectCounts = { 'ah': 0, 'ee': 0, 'oo': 0, 'sh': 0, 's': 0, 'mm': 0 };
@@ -384,11 +514,16 @@
             document.getElementById('finalResult').classList.add('hidden');
             document.getElementById('startTest').classList.add('hidden');
             document.getElementById('exitTest').classList.remove('hidden');
+            // 隐藏测试类型选择和测试设置
+            document.getElementById('testTypeSelection').classList.add('hidden');
+            document.getElementById('testSettings').classList.add('hidden');
+            // 显示当前测试类型
+            document.getElementById('currentTestType').textContent = 'You are currently taking the Multiple Choice test.';
             nextQuestion();
         }
 
         function exitTest() {
-            location.reload();
+            resetTestPage();
         }
 
         function nextQuestion() {
@@ -397,8 +532,12 @@
                 return;
             }
             currentQuestion++;
+            replayUsed = 0; // 重置已使用的重播次数
+            document.getElementById('replayMessage').textContent = ''; // 清除重播消息
             document.getElementById('resultMessage').textContent = '';
             document.getElementById('nextButton').classList.add('hidden');
+            document.getElementById('replayButton').classList.add('hidden');
+            document.getElementById('replayButton').disabled = false; // 重新启用重播按钮
             updateProgress();
             generateQuestion();
         }
@@ -418,7 +557,33 @@
                 testButtons.appendChild(button);
             });
 
-            playSound(correctSound);
+            playSound(correctSound, () => {
+                document.getElementById('replayButton').classList.remove('hidden');
+            });
+        }
+
+        function replaySound() {
+            const replayMessage = document.getElementById('replayMessage');
+            if (maxReplays === 'unlimited') {
+                playSound(correctSound);
+            } else {
+                const allowedReplays = parseInt(maxReplays);
+                if (replayUsed < allowedReplays) {
+                    playSound(correctSound);
+                    replayUsed++;
+                    const attemptsLeft = allowedReplays - replayUsed;
+                    if (attemptsLeft > 0) {
+                        replayMessage.style.color = '#03dac5'; // 绿色
+                        replayMessage.textContent = `You have ${attemptsLeft} replay attempt${attemptsLeft > 1 ? 's' : ''} remaining.`;
+                    } else {
+                        replayMessage.style.color = '#cf6679'; // 红色
+                        replayMessage.textContent = 'You have no replay attempts remaining.';
+                    }
+                } else {
+                    replayMessage.style.color = '#cf6679'; // 红色
+                    replayMessage.textContent = 'Your replay attempts have been used up.';
+                }
+            }
         }
 
         function checkAnswer(selectedSound) {
@@ -433,6 +598,8 @@
                 incorrectCounts[correctSound]++;
             }
             document.getElementById('nextButton').classList.remove('hidden');
+            document.getElementById('replayButton').classList.add('hidden');
+            document.getElementById('replayMessage').textContent = ''; // 清除重播消息
         }
 
         function updateProgress() {
@@ -449,42 +616,134 @@
                 Correct answers: ${correctAnswers}/${totalQuestions}<br>
                 Most incorrect sound: "${mostIncorrect}" with ${incorrectCounts[mostIncorrect]} errors.
             `;
+            document.getElementById('exitTest').classList.add('hidden');
         }
 
-        function startSameOrDifferent() {
-            const soundPair = [sounds[Math.floor(Math.random() * sounds.length)], sounds[Math.floor(Math.random() * sounds.length)]];
+        // Same or Different 测试相关函数
+        function startSameOrDifferentTest() {
+            sameOrDifferentQuestions = parseInt(document.getElementById('sameOrDifferentQuestionCount').value);
+            sameOrDifferentMaxReplays = document.getElementById('sameOrDifferentReplayCount').value;
+            sameOrDifferentCurrentQuestion = 0;
+            sameOrDifferentCorrectAnswers = 0;
+            document.getElementById('sameOrDifferentProgressBar').classList.remove('hidden');
+            document.getElementById('sameOrDifferentFinalResult').classList.add('hidden');
+            document.getElementById('startSameOrDifferentTest').classList.add('hidden');
+            document.getElementById('exitSameOrDifferentTest').classList.remove('hidden');
+            // 隐藏测试类型选择和测试设置
+            document.getElementById('testTypeSelection').classList.add('hidden');
+            document.getElementById('sameOrDifferentSettings').classList.add('hidden');
+            // 显示当前测试类型
+            document.getElementById('currentTestTypeSameOrDifferent').textContent = 'You are currently taking the Same or Different test.';
+            nextSameOrDifferent();
+        }
+
+        function nextSameOrDifferent() {
+            if (sameOrDifferentCurrentQuestion >= sameOrDifferentQuestions) {
+                showSameOrDifferentFinalResult();
+                return;
+            }
+            sameOrDifferentCurrentQuestion++;
+            sameOrDifferentReplayUsed = 0; // 重置已使用的重播次数
+            document.getElementById('sameOrDifferentReplayMessage').textContent = ''; // 清除重播消息
+            document.getElementById('sameOrDifferentResult').textContent = '';
+            document.getElementById('sameOrDifferentNextButton').classList.add('hidden');
+            document.getElementById('sameOrDifferentReplayButton').classList.add('hidden');
+            document.getElementById('sameOrDifferentReplayButton').disabled = false; // 重新启用重播按钮
+            updateSameOrDifferentProgress();
+            generateSameOrDifferentQuestion();
+        }
+
+        function generateSameOrDifferentQuestion() {
+            currentSoundPair = [sounds[Math.floor(Math.random() * sounds.length)], sounds[Math.floor(Math.random() * sounds.length)]];
             const pairingMessage = document.getElementById('pairingMessage');
             pairingMessage.classList.remove('hidden');
             pairingMessage.textContent = 'Playing first sound...';
-            playSound(soundPair[0], () => {
+            playSound(currentSoundPair[0], () => {
                 pairingMessage.textContent = 'Playing second sound...';
-                playSound(soundPair[1], () => {
+                playSound(currentSoundPair[1], () => {
                     pairingMessage.classList.add('hidden');
                     const buttonsContainer = document.getElementById('sameOrDifferentButtons');
                     buttonsContainer.innerHTML = '';
                     const sameButton = document.createElement('button');
                     sameButton.className = 'sound-button';
                     sameButton.textContent = 'Same';
-                    sameButton.onclick = () => checkSameOrDifferent(soundPair, true);
+                    sameButton.onclick = () => checkSameOrDifferent(true);
                     const differentButton = document.createElement('button');
                     differentButton.className = 'sound-button';
                     differentButton.textContent = 'Different';
-                    differentButton.onclick = () => checkSameOrDifferent(soundPair, false);
+                    differentButton.onclick = () => checkSameOrDifferent(false);
                     buttonsContainer.appendChild(sameButton);
                     buttonsContainer.appendChild(differentButton);
+                    document.getElementById('sameOrDifferentReplayButton').classList.remove('hidden');
                 });
             });
         }
 
-        function checkSameOrDifferent(soundPair, isSame) {
+        function replaySameOrDifferent() {
+            const replayMessage = document.getElementById('sameOrDifferentReplayMessage');
+            if (sameOrDifferentMaxReplays === 'unlimited') {
+                playSoundPair();
+            } else {
+                const allowedReplays = parseInt(sameOrDifferentMaxReplays);
+                if (sameOrDifferentReplayUsed < allowedReplays) {
+                    playSoundPair();
+                    sameOrDifferentReplayUsed++;
+                    const attemptsLeft = allowedReplays - sameOrDifferentReplayUsed;
+                    if (attemptsLeft > 0) {
+                        replayMessage.style.color = '#03dac5'; // 绿色
+                        replayMessage.textContent = `You have ${attemptsLeft} replay attempt${attemptsLeft > 1 ? 's' : ''} remaining.`;
+                    } else {
+                        replayMessage.style.color = '#cf6679'; // 红色
+                        replayMessage.textContent = 'You have no replay attempts remaining.';
+                    }
+                } else {
+                    replayMessage.style.color = '#cf6679'; // 红色
+                    replayMessage.textContent = 'Your replay attempts have been used up.';
+                }
+            }
+        }
+
+        function playSoundPair() {
+            const pairingMessage = document.getElementById('pairingMessage');
+            pairingMessage.classList.remove('hidden');
+            pairingMessage.textContent = 'Replaying first sound...';
+            playSound(currentSoundPair[0], () => {
+                pairingMessage.textContent = 'Replaying second sound...';
+                playSound(currentSoundPair[1], () => {
+                    pairingMessage.classList.add('hidden');
+                });
+            });
+        }
+
+        function checkSameOrDifferent(isSame) {
             const resultMessage = document.getElementById('sameOrDifferentResult');
-            if ((soundPair[0] === soundPair[1] && isSame) || (soundPair[0] !== soundPair[1] && !isSame)) {
+            if ((currentSoundPair[0] === currentSoundPair[1] && isSame) || (currentSoundPair[0] !== currentSoundPair[1] && !isSame)) {
                 resultMessage.textContent = 'Correct!';
                 resultMessage.style.color = '#03dac5'; /* 绿色 */
+                sameOrDifferentCorrectAnswers++;
             } else {
                 resultMessage.textContent = 'Incorrect!';
                 resultMessage.style.color = '#cf6679'; /* 红色 */
             }
+            document.getElementById('sameOrDifferentNextButton').classList.remove('hidden');
+            document.getElementById('sameOrDifferentReplayButton').classList.add('hidden');
+            document.getElementById('sameOrDifferentReplayMessage').textContent = ''; // 清除重播消息
+            document.getElementById('sameOrDifferentButtons').innerHTML = '';
+        }
+
+        function updateSameOrDifferentProgress() {
+            const progress = document.getElementById('sameOrDifferentProgress');
+            progress.style.width = `${(sameOrDifferentCurrentQuestion / sameOrDifferentQuestions) * 100}%`;
+        }
+
+        function showSameOrDifferentFinalResult() {
+            const finalResult = document.getElementById('sameOrDifferentFinalResult');
+            finalResult.classList.remove('hidden');
+            finalResult.innerHTML = `
+                Test completed!<br>
+                Correct answers: ${sameOrDifferentCorrectAnswers}/${sameOrDifferentQuestions}
+            `;
+            document.getElementById('exitSameOrDifferentTest').classList.add('hidden');
         }
 
         // 页面加载时显示首页
