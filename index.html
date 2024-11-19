@@ -9,8 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- 引入 Font Awesome 图标库 -->
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-          integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM7zYl5eau8m/AI6qZ4P4p6"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="sha384-DyZ88mC6Up2uqS0DQ4n7R1fv/S5Z1pKVJm6Mqv8R1WFlY5VZBr7LTTDyDAc7z5I3"
           crossorigin="anonymous">
     <style>
         /* 全局样式 */
@@ -143,6 +143,24 @@
         }
         .sound-button:active {
             transform: translateY(1px);
+        }
+        /* 小型按钮样式 */
+        .small-button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            margin-left: 5px;
+            display: inline-block;
+            border: 2px solid #6200ea;
+            border-radius: 20px;
+            background-color: #1f1f1f;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .small-button:hover {
+            background-color: #6200ea;
+            border-color: #bb86fc;
+            color: #ffffff;
         }
         /* 进度条样式 */
         #progressBar, #sameOrDifferentProgressBar {
@@ -376,6 +394,8 @@
         let isLooping = false;
         let maxReplays = 'unlimited';
         let replayUsed = 0;
+        // 添加一个状态变量，指示是否可以显示重播按钮
+        let canReplay = false;
 
         // Same or Different 相关变量
         let sameOrDifferentQuestions = 0;
@@ -384,6 +404,8 @@
         let sameOrDifferentReplayUsed = 0;
         let sameOrDifferentCorrectAnswers = 0;
         let currentSoundPair = [];
+        // 添加一个状态变量，指示是否可以显示重播按钮
+        let canReplaySameOrDifferent = false;
 
         function playSound(sound, callback) {
             const playingMessage = document.getElementById('playingMessage');
@@ -429,7 +451,7 @@
             document.getElementById('startTest').classList.remove('hidden');
             document.getElementById('exitTest').classList.add('hidden');
             document.getElementById('testSettings').classList.remove('hidden');
-            document.getElementById('resultMessage').textContent = '';
+            document.getElementById('resultMessage').innerHTML = '';
             document.getElementById('nextButton').classList.add('hidden');
             document.getElementById('replayButton').classList.add('hidden');
             document.getElementById('replayMessage').textContent = '';
@@ -437,6 +459,7 @@
             document.getElementById('currentTestType').textContent = '';
             currentQuestion = 0;
             correctAnswers = 0;
+            canReplay = false;
 
             // 重置 Same or Different 测试相关元素
             document.getElementById('sameOrDifferentProgressBar').classList.add('hidden');
@@ -452,6 +475,7 @@
             document.getElementById('currentTestTypeSameOrDifferent').textContent = '';
             sameOrDifferentCurrentQuestion = 0;
             sameOrDifferentCorrectAnswers = 0;
+            canReplaySameOrDifferent = false;
 
             // 重置测试类型选择
             document.getElementById('testType').value = '';
@@ -534,10 +558,11 @@
             currentQuestion++;
             replayUsed = 0; // 重置已使用的重播次数
             document.getElementById('replayMessage').textContent = ''; // 清除重播消息
-            document.getElementById('resultMessage').textContent = '';
+            document.getElementById('resultMessage').innerHTML = '';
             document.getElementById('nextButton').classList.add('hidden');
             document.getElementById('replayButton').classList.add('hidden');
             document.getElementById('replayButton').disabled = false; // 重新启用重播按钮
+            canReplay = true; // 允许重播
             updateProgress();
             generateQuestion();
         }
@@ -558,7 +583,9 @@
             });
 
             playSound(correctSound, () => {
-                document.getElementById('replayButton').classList.remove('hidden');
+                if (canReplay) {
+                    document.getElementById('replayButton').classList.remove('hidden');
+                }
             });
         }
 
@@ -588,18 +615,24 @@
 
         function checkAnswer(selectedSound) {
             const resultMessage = document.getElementById('resultMessage');
+            // 无论正确与否，隐藏重播按钮
+            document.getElementById('replayButton').classList.add('hidden');
+            canReplay = false; // 禁止重播
+            document.getElementById('replayMessage').textContent = ''; // 清除重播消息
             if (selectedSound === correctSound) {
                 resultMessage.textContent = 'Correct!';
                 resultMessage.style.color = '#03dac5'; /* 绿色 */
                 correctAnswers++;
             } else {
-                resultMessage.textContent = `Incorrect. The correct answer was "${correctSound}".`;
+                resultMessage.innerHTML = `You chose "${selectedSound}" <button class="small-button" onclick="playSound('${selectedSound}')">Play <i class="fas fa-play"></i></button>, the correct answer was "${correctSound}" <button class="small-button" onclick="playSound('${correctSound}')">Play <i class="fas fa-play"></i></button>.`;
                 resultMessage.style.color = '#cf6679'; /* 红色 */
                 incorrectCounts[correctSound]++;
+                // 在提示消息下方添加一句话
+                resultMessage.innerHTML += '<br><span style="font-size: 0.9em;">You can click the play buttons above to compare.</span>';
             }
+            // 禁用所有按钮
+            document.querySelectorAll('#testButtons .sound-button').forEach(button => button.disabled = true);
             document.getElementById('nextButton').classList.remove('hidden');
-            document.getElementById('replayButton').classList.add('hidden');
-            document.getElementById('replayMessage').textContent = ''; // 清除重播消息
         }
 
         function updateProgress() {
@@ -649,6 +682,7 @@
             document.getElementById('sameOrDifferentNextButton').classList.add('hidden');
             document.getElementById('sameOrDifferentReplayButton').classList.add('hidden');
             document.getElementById('sameOrDifferentReplayButton').disabled = false; // 重新启用重播按钮
+            canReplaySameOrDifferent = true; // 允许重播
             updateSameOrDifferentProgress();
             generateSameOrDifferentQuestion();
         }
@@ -674,7 +708,9 @@
                     differentButton.onclick = () => checkSameOrDifferent(false);
                     buttonsContainer.appendChild(sameButton);
                     buttonsContainer.appendChild(differentButton);
-                    document.getElementById('sameOrDifferentReplayButton').classList.remove('hidden');
+                    if (canReplaySameOrDifferent) {
+                        document.getElementById('sameOrDifferentReplayButton').classList.remove('hidden');
+                    }
                 });
             });
         }
@@ -717,6 +753,10 @@
 
         function checkSameOrDifferent(isSame) {
             const resultMessage = document.getElementById('sameOrDifferentResult');
+            // 无论正确与否，隐藏重播按钮
+            document.getElementById('sameOrDifferentReplayButton').classList.add('hidden');
+            canReplaySameOrDifferent = false; // 禁止重播
+            document.getElementById('sameOrDifferentReplayMessage').textContent = ''; // 清除重播消息
             if ((currentSoundPair[0] === currentSoundPair[1] && isSame) || (currentSoundPair[0] !== currentSoundPair[1] && !isSame)) {
                 resultMessage.textContent = 'Correct!';
                 resultMessage.style.color = '#03dac5'; /* 绿色 */
@@ -726,8 +766,6 @@
                 resultMessage.style.color = '#cf6679'; /* 红色 */
             }
             document.getElementById('sameOrDifferentNextButton').classList.remove('hidden');
-            document.getElementById('sameOrDifferentReplayButton').classList.add('hidden');
-            document.getElementById('sameOrDifferentReplayMessage').textContent = ''; // 清除重播消息
             document.getElementById('sameOrDifferentButtons').innerHTML = '';
         }
 
