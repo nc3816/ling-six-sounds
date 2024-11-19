@@ -120,10 +120,23 @@
             align-items: center;
             margin-bottom: 20px;
         }
+        .description-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: justify; /* 两端对齐 */
+        }   
     </style>
 </head>
 <body>
     <h1>Ling Six Sound Check</h1>
+    <div id="description" class="description-container">
+        <p>
+            The Ling Six Sounds Check is a simple yet effective tool used to assess an individual's ability to hear and distinguish a range of speech frequencies essential for understanding spoken language. It involves six distinct sounds: "ah," "ee," "oo," "sh," "s," and "mm," which represent low to high frequencies of speech.
+        </p>
+        <p>
+            Welcome to the Ling Six Sounds Check Online version! This interactive platform allows you to practice and test your hearing abilities conveniently from anywhere. We hope you enjoy using this tool and find it helpful in improving your auditory skills.
+        </p>
+    </div>
     <div class="tabs">
         <div class="tab active" onclick="showTab('practice')">Practice</div>
         <div class="tab" onclick="showTab('test')">Test</div>
@@ -137,7 +150,7 @@
         </select>
 
         <div id="manualMode">
-            <p>Click on each button to listen to a Ling Six Sound. Please respond by indicating if you can hear the sound.</p>
+            <p>Click on each button to listen to a Ling Six Sound.</p>
             <button class="sound-button" onclick="playSound('ah')">Play "ah" <i class="fas fa-volume-up"></i></button>
             <button class="sound-button" onclick="playSound('ee')">Play "ee" <i class="fas fa-volume-up"></i></button>
             <button class="sound-button" onclick="playSound('oo')">Play "oo" <i class="fas fa-volume-up"></i></button>
@@ -232,6 +245,14 @@
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
             document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+    
+            // Hide or show description based on the selected tab
+            const description = document.getElementById('description');
+            if (tabId === 'test') {
+                description.style.display = 'none'; // Hide description when "test" tab is active
+            } else {
+                description.style.display = 'block'; // Show description for other tabs
+            }
         }
 
         function changePracticeMode(value) {
