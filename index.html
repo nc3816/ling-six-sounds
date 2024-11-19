@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ling Six Sound Check</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
           integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOM7zYl5dox6Lt4Ah96em7w5eau8m/AI6qZ4P4p6"
           crossorigin="anonymous">
@@ -211,15 +210,11 @@
     <script>
         const sounds = ['ah', 'ee', 'oo', 'sh', 's', 'mm'];
         let correctSound = '';
-        let hasAnswered = false;
         let currentQuestion = 0;
         let totalQuestions = 0;
         let correctAnswers = 0;
         let incorrectCounts = { 'ah': 0, 'ee': 0, 'oo': 0, 'sh': 0, 's': 0, 'mm': 0 };
-        let testOrder = [];
         let isLooping = false;
-        let replayCount = 0;
-        let replayUsed = 0;
 
         function playSound(sound, callback) {
             const playingMessage = document.getElementById('playingMessage');
@@ -228,11 +223,7 @@
             audio.play();
             audio.onended = () => {
                 playingMessage.classList.add('hidden');
-                if (callback) {
-                    setTimeout(() => {
-                        callback();
-                    }, 1000);
-                }
+                if (callback) callback();
             };
         }
 
@@ -241,6 +232,36 @@
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
             document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        function changePracticeMode(value) {
+            const manualMode = document.getElementById('manualMode');
+            const loopMode = document.getElementById('loopMode');
+            if (value === 'manual') {
+                manualMode.classList.remove('hidden');
+                loopMode.classList.add('hidden');
+            } else if (value === 'loop') {
+                manualMode.classList.add('hidden');
+                loopMode.classList.remove('hidden');
+            }
+        }
+
+        function startLoop() {
+            if (isLooping) return;
+            isLooping = true;
+            loopSounds();
+        }
+
+        function stopLoop() {
+            isLooping = false;
+        }
+
+        function loopSounds() {
+            if (!isLooping) return;
+            const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+            playSound(randomSound, () => {
+                if (isLooping) setTimeout(loopSounds, 2000);
+            });
         }
 
         function selectTestType(testType) {
@@ -254,16 +275,15 @@
         }
 
         function startTest() {
-            document.getElementById('exitTest').classList.remove('hidden');
-            document.getElementById('startTest').classList.add('hidden');
             const optionCount = parseInt(document.getElementById('optionCount').value);
             totalQuestions = parseInt(document.getElementById('questionCount').value);
             currentQuestion = 0;
             correctAnswers = 0;
             incorrectCounts = { 'ah': 0, 'ee': 0, 'oo': 0, 'sh': 0, 's': 0, 'mm': 0 };
-            testOrder = Array.from({ length: totalQuestions }, () => optionCount);
             document.getElementById('progressBar').classList.remove('hidden');
             document.getElementById('finalResult').classList.add('hidden');
+            document.getElementById('startTest').classList.add('hidden');
+            document.getElementById('exitTest').classList.remove('hidden');
             nextQuestion();
         }
 
@@ -271,17 +291,22 @@
             location.reload();
         }
 
-        function setOption(optionCount) {
-            generateTestButtons(optionCount);
+        function nextQuestion() {
+            if (currentQuestion >= totalQuestions) {
+                showFinalResult();
+                return;
+            }
+            currentQuestion++;
+            document.getElementById('resultMessage').textContent = '';
+            document.getElementById('nextButton').classList.add('hidden');
+            updateProgress();
+            generateQuestion();
         }
 
-        function generateTestButtons(optionCount) {
-            const testButtonsContainer = document.getElementById('testButtons');
-            const resultMessage = document.getElementById('resultMessage');
-            testButtonsContainer.innerHTML = '';
-            resultMessage.textContent = '';
-            hasAnswered = false;
-
+        function generateQuestion() {
+            const optionCount = parseInt(document.getElementById('optionCount').value);
+            const testButtons = document.getElementById('testButtons');
+            testButtons.innerHTML = '';
             const shuffledSounds = sounds.sort(() => 0.5 - Math.random()).slice(0, optionCount);
             correctSound = shuffledSounds[Math.floor(Math.random() * shuffledSounds.length)];
 
@@ -289,20 +314,11 @@
                 const button = document.createElement('button');
                 button.className = 'sound-button';
                 button.textContent = sound;
-                button.onclick = () => {
-                    if (!hasAnswered) {
-                        checkAnswer(sound);
-                        document.querySelectorAll('#testButtons .sound-button').forEach(btn => btn.disabled = true);
-                    }
-                };
-                testButtonsContainer.appendChild(button);
+                button.onclick = () => checkAnswer(sound);
+                testButtons.appendChild(button);
             });
-        }
 
-        function playTestSound() {
-            if (correctSound && !hasAnswered) {
-                playSound(correctSound);
-            }
+            playSound(correctSound);
         }
 
         function checkAnswer(selectedSound) {
@@ -316,21 +332,7 @@
                 resultMessage.style.color = '#dc3545';
                 incorrectCounts[correctSound]++;
             }
-            hasAnswered = true;
             document.getElementById('nextButton').classList.remove('hidden');
-        }
-
-        function nextQuestion() {
-            currentQuestion++;
-            document.getElementById('nextButton').classList.add('hidden');
-            document.getElementById('resultMessage').textContent = '';
-            updateProgress();
-            if (currentQuestion <= totalQuestions) {
-                setOption(testOrder[currentQuestion - 1]);
-                playTestSound();
-            } else {
-                showFinalResult();
-            }
         }
 
         function updateProgress() {
@@ -342,46 +344,46 @@
             const finalResult = document.getElementById('finalResult');
             finalResult.classList.remove('hidden');
             const mostIncorrect = Object.keys(incorrectCounts).reduce((a, b) => incorrectCounts[a] > incorrectCounts[b] ? a : b);
-            finalResult.innerHTML = `Test completed!<br>Correct answers: ${correctAnswers}/${totalQuestions}<br>Most incorrect sound: "${mostIncorrect}" with ${incorrectCounts[mostIncorrect]} errors.`;
+            finalResult.innerHTML = `
+                Test completed!<br>
+                Correct answers: ${correctAnswers}/${totalQuestions}<br>
+                Most incorrect sound: "${mostIncorrect}" with ${incorrectCounts[mostIncorrect]} errors.
+            `;
         }
 
         function startSameOrDifferent() {
             const soundPair = [sounds[Math.floor(Math.random() * sounds.length)], sounds[Math.floor(Math.random() * sounds.length)]];
-            document.getElementById('pairingMessage').classList.remove('hidden');
-            document.getElementById('pairingMessage').textContent = `Playing two sounds...
-Playing first sound...`;
+            const pairingMessage = document.getElementById('pairingMessage');
+            pairingMessage.classList.remove('hidden');
+            pairingMessage.textContent = 'Playing first sound...';
             playSound(soundPair[0], () => {
-                document.getElementById('pairingMessage').textContent = `Playing second sound...`;
+                pairingMessage.textContent = 'Playing second sound...';
                 playSound(soundPair[1], () => {
-                    document.getElementById('pairingMessage').classList.add('hidden');
-                    const sameOrDifferentButtons = document.getElementById('sameOrDifferentButtons');
-                    sameOrDifferentButtons.innerHTML = '';
+                    pairingMessage.classList.add('hidden');
+                    const buttonsContainer = document.getElementById('sameOrDifferentButtons');
+                    buttonsContainer.innerHTML = '';
                     const sameButton = document.createElement('button');
                     sameButton.className = 'sound-button';
                     sameButton.textContent = 'Same';
-                    sameButton.onclick = () => {
-                        checkSameOrDifferent(soundPair, true);
-                    };
+                    sameButton.onclick = () => checkSameOrDifferent(soundPair, true);
                     const differentButton = document.createElement('button');
                     differentButton.className = 'sound-button';
                     differentButton.textContent = 'Different';
-                    differentButton.onclick = () => {
-                        checkSameOrDifferent(soundPair, false);
-                    };
-                    sameOrDifferentButtons.appendChild(sameButton);
-                    sameOrDifferentButtons.appendChild(differentButton);
+                    differentButton.onclick = () => checkSameOrDifferent(soundPair, false);
+                    buttonsContainer.appendChild(sameButton);
+                    buttonsContainer.appendChild(differentButton);
                 });
             });
         }
 
         function checkSameOrDifferent(soundPair, isSame) {
-            const sameOrDifferentResult = document.getElementById('sameOrDifferentResult');
+            const resultMessage = document.getElementById('sameOrDifferentResult');
             if ((soundPair[0] === soundPair[1] && isSame) || (soundPair[0] !== soundPair[1] && !isSame)) {
-                sameOrDifferentResult.textContent = 'Correct!';
-                sameOrDifferentResult.style.color = '#28a745';
+                resultMessage.textContent = 'Correct!';
+                resultMessage.style.color = '#28a745';
             } else {
-                sameOrDifferentResult.textContent = 'Incorrect!';
-                sameOrDifferentResult.style.color = '#dc3545';
+                resultMessage.textContent = 'Incorrect!';
+                resultMessage.style.color = '#dc3545';
             }
         }
     </script>
