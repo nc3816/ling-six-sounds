@@ -94,11 +94,18 @@
             margin-bottom: 20px;
             color: #bb86fc; /* 浅紫色标题 */
         }
+        h2 {
+            font-size: 1.5em;
+            color: #bb86fc; /* 浅紫色标题 */
+        }
         p {
             font-size: 1.2em;
             margin-bottom: 30px;
             color: #e0e0e0;
             line-height: 1.6;
+        }
+        .content {
+            flex: 1;
         }
         .tab-content {
             width: 100%;
@@ -232,6 +239,55 @@
                 flex: 0 0 calc(100% - 20px);
             }
         }
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1f1f1f;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .contact-form input, .contact-form textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: #e0e0e0;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .contact-form textarea {
+            resize: none;
+            height: 100px;
+        }
+        .contact-form button {
+            background: #6200ea;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            width: 100%;
+        }
+        .contact-form button:hover {
+            margin-top: auto;
+            background: #bb86fc;
+            padding: 10px; /* 可根据需要调整 */
+            text-align: center;
+            width: 100%;
+        }
+        .footer { 
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9em; 
+            color: #aaa; 
+        }
     </style>
 </head>
 <body>
@@ -241,6 +297,8 @@
             <li class="nav-item active" onclick="showTab('home')">Home</li>
             <li class="nav-item" onclick="showTab('practice')">Practice</li>
             <li class="nav-item" onclick="showTab('test')">Test</li>
+            <li class="nav-item" onclick="showTab('about')">About</li>
+            <li class="nav-item" onclick="showTab('contact')">Contact</li>
         </ul>
     </nav>
 
@@ -249,9 +307,11 @@
     <!-- 首页 -->
     <div id="home" class="tab-content">
         <div id="description" class="description-container">
+            <h2> What is the Ling Six Sounds Test? </h2>
             <p>
                 The Ling Six Sounds Check is a simple yet effective tool used to assess an individual's ability to hear and distinguish a range of speech frequencies essential for understanding spoken language. It involves six distinct sounds: "ah," "ee," "oo," "sh," "s," and "mm," which represent low to high frequencies of speech.
             </p>
+            <p>This test is widely used in audiology to assess hearing loss and the effectiveness of hearing aids or cochlear implants.</p>
             <p>
                 Welcome to the Ling Six Sounds Check Online version! This interactive platform allows you to practice and test your hearing abilities conveniently from anywhere. We hope you enjoy using this tool and find it helpful in improving your auditory skills.
             </p>
@@ -294,7 +354,7 @@
     </div>
 
     <!-- Test 页面 -->
-    <div id="test" class="tab-content hidden">
+    <div id="test" class="tab-content">
         <!-- 测试类型选择 -->
         <div id="testTypeSelection">
             <p>Select the type of test:</p>
@@ -396,7 +456,46 @@
         </div>
     </div>
 
+     <!-- ABOUT US 页面 -->
+    <div id="about" class="tab-content hidden">
+        <div id="description" class="description-container">
+            <p>
+                Welcome to Ling Six Sounds Check Online Test! We are committed to helping users worldwide enhance their auditory skills by providing a scientifically validated hearing test tool.
+            </p>
+            <p>This project was developed by a cochlear implant user who underwent auditory rehabilitation in the United States and holds a master’s degree in Computer Science. As a developer with hearing impairment, she understands the importance of auditory training and created this online tool to make it easier for more people to assess and improve their ability to distinguish speech sounds.</p>
+            <p>
+                The Ling Six Sounds Test is an internationally recognized fundamental hearing assessment method, used to evaluate the auditory abilities of individuals with hearing loss and assist them in making better use of hearing aids or cochlear implants. This platform integrates modern web technology to provide a more convenient and intuitive testing experience, making it suitable for anyone who needs hearing evaluation or training.
+            </p>
+            <p>We hope this tool proves helpful to you, and we welcome your feedback. If you are interested in this project, feel free to contact us!</p>
+            <p style="text-align: center; margin-top: 40px; font-size: 1.5em; color: #bb86fc;">
+                Would you like to try?
+            </p>
+            <div class="home-buttons">
+                <button class="home-button" onclick="showTab('practice')">Go to Practice</button>
+                <button class="home-button" onclick="showTab('test')">Go to Test</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact" class="tab-content hidden">
+        <div id="description" class="description-container"></div>
+            <h2>Contact Us</h2>
+            <p>If you have any questions or feedback, feel free to reach out to us via the form below or email us at <a href="mailto:lingsixsounds@gmail.com" style="color: #bb86fc;">lingsixsounds@gmail.com</a>.</p>
+                <div class="contact-form">
+                    <form action="mailto:lingsixsounds@gmail.com" method="post" enctype="text/plain">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                        <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+                        <button type="submit">Send Message</button>
+                    </form>
+                </div>
+        </div>
+    </div>
+
     <div id="playingMessage" class="hidden">Please listen carefully, now playing...</div>
+    <footer class="footer">
+        <p>&copy; 2025 Ling Six Sounds Check Online Test. All rights reserved. | <a href="privacy.html" style="color: #bb86fc;">Privacy Policy</a></p>
+    </footer>
 
     <script>
         // 声音列表
