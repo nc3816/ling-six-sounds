@@ -13,6 +13,8 @@
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
           integrity="sha384-DyZ88mC6Up2uqS0DQ4n7R1fv/S5Z1pKVJm6Mqv8R1WFlY5VZBr7LTTDyDAc7z5I3"
           crossorigin="anonymous">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXTM2BGGGB"></script>
     <script>
@@ -29,6 +31,47 @@
      <!-- End Google Ads -->
     <style>
         /* 全局样式 */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .content {
+            flex: 1;
+        }
+        .footer { 
+            width: 100%;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9em; 
+            color: #aaa; 
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #f1f1f1; /* 可根据需要调整 */
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            margin-left: auto;
+        }
+        .nav-item {
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        .nav-item.active {
+            font-weight: bold;
+        }
         body {
             font-family: 'Roboto', sans-serif;
             text-align: center;
@@ -293,6 +336,7 @@
 <body>
     <!-- 导航菜单 -->
     <nav>
+        <img src="logo.png" alt="Ling Six Sounds Logo" style="height: 50px;">
         <ul class="nav-menu">
             <li class="nav-item active" onclick="showTab('home')">Home</li>
             <li class="nav-item" onclick="showTab('practice')">Practice</li>
