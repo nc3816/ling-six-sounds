@@ -4,7 +4,7 @@
     <!-- 元数据和样式 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ling Six Sounds Check Online Test | Improve Your Hearing Skills</title>
+    <title data-i18n="pageTitle">Ling Six Sounds Check Online Test | Improve Your Hearing Skills</title>
     <meta name="description" content="Participate in the Ling Six Sounds Check online test to assess and improve your hearing abilities with the six essential speech frequencies.">
     <!-- 引入谷歌字体 -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -21,7 +21,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-HXTM2BGGGB');
     </script>
      <!-- End Google tag -->
@@ -29,6 +28,7 @@
      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8658254792228498"
      crossorigin="anonymous"></script>
      <!-- End Google Ads -->
+
     <style>
         /* 全局样式 */
         body {
@@ -47,31 +47,7 @@
             font-size: 0.9em; 
             color: #aaa; 
         }
-        nav {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            background-color: #f1f1f1; /* 可根据需要调整 */
-        }
-        .nav-container {
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-        .nav-menu {
-            list-style: none;
-            display: flex;
-            margin: 0;
-            padding: 0;
-            margin-left: auto;
-        }
-        .nav-item {
-            margin: 0 10px;
-            cursor: pointer;
-        }
-        .nav-item.active {
-            font-weight: bold;
-        }
+
         body {
             font-family: 'Roboto', sans-serif;
             text-align: center;
@@ -86,31 +62,46 @@
             min-height: 100vh;
         }
         /* 导航菜单样式 */
-        nav {
-            background-color: #1f1f1f; /* 导航栏深色背景 */
-            width: 100%;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-            position: fixed;
-            top: 0;
+        .navbar {
+            display: flex;
+            justify-content: space-between; /* 左右分散 */
+            align-items: center;           /* 垂直居中 */
+            background-color: #1f1f1f;     /* 示例：黑灰色背景 */
+            padding: 0 20px;              /* 左右留一些内边距 */
+            height: 60px;                 /* 固定导航高度，可按需调整 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            position: fixed;    /* 如果需要固定在页面顶部可加 */
+            top: 0;            /* 配合 position: fixed 固定 */
             left: 0;
-            z-index: 1000;
+            right: 0;
+            z-index: 1000;     /* 置于顶层 */
         }
         .nav-menu {
             list-style: none;
             display: flex;
-            justify-content: flex-end; /* 右侧对齐导航菜单 */
             margin: 0;
-            padding: 0 20px;
+            padding: 0;
         }
         .nav-item {
-            padding: 15px 20px;
+            margin: 0 10px;
             cursor: pointer;
             color: #e0e0e0;
             font-weight: bold;
             transition: background 0.3s, color 0.3s;
             text-transform: uppercase;
-            position: relative;
         }
+
+                /* 左右容器 */
+                .nav-left, .nav-right {
+            display: flex;
+            align-items: center; 
+        }
+
+
+        .nav-item.active {
+            font-weight: bold;
+        }
+
         .nav-item::after {
             content: '';
             position: absolute;
@@ -320,7 +311,6 @@
         .contact-form button:hover {
             margin-top: auto;
             background: #bb86fc;
-            padding: 10px; /* 可根据需要调整 */
             text-align: center;
             width: 100%;
         }
@@ -331,81 +321,126 @@
             font-size: 0.9em; 
             color: #aaa; 
         }
+        /* 语言选择器 */
+        .language-selector {
+            color: #e0e0e0;
+            border: 2px solid #6200ea;
+            border-radius: 5px;
+            margin-left: 20px;
+            background-color: transparent; 
+            padding: 5px 12px;
+            cursor: pointer;
+        }
+        .language-selector:hover {
+            background-color: #6200ea;
+            color: #fff;
+        }
+        .language-selector-item {
+            margin-left: auto; /* 自动把它挤到最右 */
+        }
     </style>
 </head>
 <body>
     <!-- 导航菜单 -->
-    <nav>
-        <img src="logo.png" alt="Ling Six Sounds Logo" style="height: 50px;">
-        <ul class="nav-menu">
-            <li class="nav-item active" onclick="showTab('home')">Home</li>
-            <li class="nav-item" onclick="showTab('practice')">Practice</li>
-            <li class="nav-item" onclick="showTab('test')">Test</li>
-            <li class="nav-item" onclick="showTab('about')">About</li>
-            <li class="nav-item" onclick="showTab('contact')">Contact</li>
-        </ul>
+    <nav class="navbar">
+        <!-- 左侧：Logo + 菜单 -->
+        <div class="nav-left">
+            <img src="logo.png" alt="Ling Six Sounds Logo" style="height: 50px;">
+            <ul class="nav-menu">
+                <li class="nav-item active" onclick="showTab('home')" data-i18n="navHome">Home</li>
+                <li class="nav-item" onclick="showTab('practice')" data-i18n="navPractice">Practice</li>
+                <li class="nav-item" onclick="showTab('test')" data-i18n="navTest">Test</li>
+                <li class="nav-item" onclick="showTab('about')" data-i18n="navAbout">About</li>
+                <li class="nav-item" onclick="showTab('contact')" data-i18n="navContact">Contact</li>
+            </ul>
+        </div>
+        <!-- 右侧：语言选择器 -->
+         <div class="nav-right">
+            <select id="languageSelector" class="language-selector" onchange="switchLanguage()">
+                <option value="en">English</option>
+                <option value="cn">中文</option>
+            </select>
+        </div>
     </nav>
 
-    <h1>Ling Six Sounds Check Online Test</h1>
+    <!-- 页面主标题 -->
+    <h1 data-i18n="mainTitle">Ling Six Sounds Check Online Test</h1>
 
     <!-- 首页 -->
     <div id="home" class="tab-content">
         <div id="description" class="description-container">
-            <h2> What is the Ling Six Sounds Test? </h2>
-            <p>
+            <h2 data-i18n="homeSubtitle">What is the Ling Six Sounds Test?</h2>
+            <p data-i18n="homeP1">
                 The Ling Six Sounds Check is a simple yet effective tool used to assess an individual's ability to hear and distinguish a range of speech frequencies essential for understanding spoken language. It involves six distinct sounds: "ah," "ee," "oo," "sh," "s," and "mm," which represent low to high frequencies of speech.
             </p>
-            <p>This test is widely used in audiology to assess hearing loss and the effectiveness of hearing aids or cochlear implants.</p>
-            <p>
+            <p data-i18n="homeP2">
+                This test is widely used in audiology to assess hearing loss and the effectiveness of hearing aids or cochlear implants.
+            </p>
+            <p data-i18n="homeP3">
                 Welcome to the Ling Six Sounds Check Online version! This interactive platform allows you to practice and test your hearing abilities conveniently from anywhere. We hope you enjoy using this tool and find it helpful in improving your auditory skills.
             </p>
-            <p style="text-align: center; margin-top: 40px; font-size: 1.5em; color: #bb86fc;">
+            <p style="text-align: center; margin-top: 40px; font-size: 1.5em; color: #bb86fc;" data-i18n="homeP4">
                 Would you like to try?
             </p>
             <div class="home-buttons">
-                <button class="home-button" onclick="showTab('practice')">Go to Practice</button>
-                <button class="home-button" onclick="showTab('test')">Go to Test</button>
+                <button class="home-button" onclick="showTab('practice')" data-i18n="goPractice">Go to Practice</button>
+                <button class="home-button" onclick="showTab('test')" data-i18n="goTest">Go to Test</button>
             </div>
         </div>
     </div>
 
     <!-- Practice 页面 -->
     <div id="practice" class="tab-content hidden">
-        <p>Please select a practice mode:</p>
+        <p data-i18n="practiceSelectMode">Please select a practice mode:</p>
         <select id="practiceMode" onchange="changePracticeMode(this.value)">
-            <option value="manual" selected>Manual Mode</option>
-            <option value="loop">Loop Mode</option>
+            <option value="manual" data-i18n="practiceManualOption" selected>Manual Mode</option>
+            <option value="loop" data-i18n="practiceLoopOption">Loop Mode</option>
         </select>
 
+        <!-- 手动模式 -->
         <div id="manualMode">
-            <p>Click on each button to listen to a Ling Six Sound.</p>
+            <p data-i18n="practiceManualInstr">Click on each button to listen to a Ling Six Sound.</p>
             <div class="sound-button-container">
-                <button class="sound-button" onclick="playSound('ah')">Play "ah" <i class="fas fa-volume-up"></i></button>
-                <button class="sound-button" onclick="playSound('ee')">Play "ee" <i class="fas fa-volume-up"></i></button>
-                <button class="sound-button" onclick="playSound('oo')">Play "oo" <i class="fas fa-volume-up"></i></button>
-                <button class="sound-button" onclick="playSound('sh')">Play "sh" <i class="fas fa-volume-up"></i></button>
-                <button class="sound-button" onclick="playSound('s')">Play "s" <i class="fas fa-volume-up"></i></button>
-                <button class="sound-button" onclick="playSound('mm')">Play "mm" <i class="fas fa-volume-up"></i></button>
+                <!-- 这里 button 的文字可以直接用 data-i18n，也可以直接写 -->
+                <button class="sound-button" onclick="playSound('ah')">
+                    <span data-i18n="playAh">Play "ah"</span> <i class="fas fa-volume-up"></i>
+                </button>
+                <button class="sound-button" onclick="playSound('ee')">
+                    <span data-i18n="playEe">Play "ee"</span> <i class="fas fa-volume-up"></i>
+                </button>
+                <button class="sound-button" onclick="playSound('oo')">
+                    <span data-i18n="playOo">Play "oo"</span> <i class="fas fa-volume-up"></i>
+                </button>
+                <button class="sound-button" onclick="playSound('sh')">
+                    <span data-i18n="playSh">Play "sh"</span> <i class="fas fa-volume-up"></i>
+                </button>
+                <button class="sound-button" onclick="playSound('s')">
+                    <span data-i18n="playS">Play "s"</span> <i class="fas fa-volume-up"></i>
+                </button>
+                <button class="sound-button" onclick="playSound('mm')">
+                    <span data-i18n="playMm">Play "mm"</span> <i class="fas fa-volume-up"></i>
+                </button>
             </div>
         </div>
 
+        <!-- 循环模式 -->
         <div id="loopMode" class="hidden">
-            <p>The system will randomly play the six sounds. Please listen carefully.</p>
-            <button class="sound-button" onclick="startLoop()">Start Loop Mode <i class="fas fa-play"></i></button>
-            <button class="sound-button" onclick="stopLoop()">Stop Loop Mode <i class="fas fa-stop"></i></button>
+            <p data-i18n="practiceLoopInstr">The system will randomly play the six sounds. Please listen carefully.</p>
+            <button class="sound-button" onclick="startLoop()" data-i18n="startLoop">Start Loop Mode <i class="fas fa-play"></i></button>
+            <button class="sound-button" onclick="stopLoop()" data-i18n="stopLoop">Stop Loop Mode <i class="fas fa-stop"></i></button>
             <div id="currentSound" style="margin-top: 20px; font-size: 1.5em; color: #bb86fc;"></div>
         </div>
     </div>
 
     <!-- Test 页面 -->
-    <div id="test" class="tab-content">
+    <div id="test" class="tab-content hidden">
         <!-- 测试类型选择 -->
         <div id="testTypeSelection">
-            <p>Select the type of test:</p>
+            <p data-i18n="testSelectType">Select the type of test:</p>
             <select id="testType">
-                <option value="" disabled selected>Select test type</option>
-                <option value="multipleChoice">Multiple Choice</option>
-                <option value="sameOrDifferent">Same or Different</option>
+                <option value="" disabled selected data-i18n="testTypePlaceholder">Select test type</option>
+                <option value="multipleChoice" data-i18n="testTypeMultipleChoice">Multiple Choice</option>
+                <option value="sameOrDifferent" data-i18n="testTypeSameOrDifferent">Same or Different</option>
             </select>
         </div>
 
@@ -416,46 +451,45 @@
             <div id="testSettings">
                 <div class="test-options">
                     <div>
-                        <p>Select the number of options for the test:</p>
+                        <p data-i18n="selectOptionCount">Select the number of options for the test:</p>
                         <select id="optionCount">
-                            <option value="2" selected>2 Options</option>
-                            <option value="3">3 Options</option>
-                            <option value="4">4 Options</option>
-                            <option value="5">5 Options</option>
-                            <option value="6">6 Options</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
                         </select>
                     </div>
                     <div>
-                        <p>Select the number of questions:</p>
+                        <p data-i18n="selectQuestionCount">Select the number of questions:</p>
                         <select id="questionCount">
-                            <option value="10">10 Questions</option>
-                            <option value="30">30 Questions</option>
-                            <option value="50">50 Questions</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
                         </select>
                     </div>
                     <div>
-                        <p>Select the number of replays allowed per question:</p>
+                        <p data-i18n="selectReplayCount">Select the number of replays allowed per question:</p>
                         <select id="replayCount">
-                            <option value="1">1 Time</option>
-                            <option value="2">2 Times</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
                             <option value="unlimited" selected>Unlimited</option>
                         </select>
                     </div>
                 </div>
             </div>
             <div style="margin-top: 20px;">
-                <button class="sound-button" id="startTest" onclick="startTest()">Start Test <i class="fas fa-play"></i></button>
-                <button class="sound-button hidden" id="exitTest" onclick="exitTest()" style="position: fixed; bottom: 20px; right: 20px;">Exit Test <i class="fas fa-stop"></i></button>
+                <button class="sound-button" id="startTest" onclick="startTest()" data-i18n="startTestBtn">Start Test <i class="fas fa-play"></i></button>
+                <button class="sound-button hidden" id="exitTest" onclick="exitTest()" style="position: fixed; bottom: 20px; right: 20px;" data-i18n="exitTestBtn">Exit Test <i class="fas fa-stop"></i></button>
             </div>
             <div id="progressBar" class="hidden">
                 <div id="progress"></div>
             </div>
             <div id="testButtons" style="margin-top: 20px;"></div>
             <div id="resultMessage" style="margin-top: 20px; font-size: 1.5em;"></div>
-            <button id="replayButton" class="sound-button hidden" onclick="replaySound()">Replay Sound <i class="fas fa-redo"></i></button>
-            <!-- 添加用于显示重播次数的消息 -->
+            <button id="replayButton" class="sound-button hidden" onclick="replaySound()" data-i18n="replaySoundBtn">Replay Sound <i class="fas fa-redo"></i></button>
             <div id="replayMessage" style="margin-top: 10px; font-size: 1em; color: #03dac5;"></div>
-            <button id="nextButton" class="sound-button hidden" onclick="nextQuestion()">Next</button>
+            <button id="nextButton" class="sound-button hidden" onclick="nextQuestion()" data-i18n="nextBtn">Next</button>
             <div id="finalResult" class="hidden" style="margin-top: 20px; font-size: 1.5em;"></div>
         </div>
 
@@ -466,82 +500,360 @@
             <div id="sameOrDifferentSettings">
                 <div class="test-options">
                     <div>
-                        <p>Select the number of questions:</p>
+                        <p data-i18n="selectQuestionCount">Select the number of questions:</p>
                         <select id="sameOrDifferentQuestionCount">
-                            <option value="10">10 Questions</option>
-                            <option value="30">30 Questions</option>
-                            <option value="50">50 Questions</option>
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
                         </select>
                     </div>
                     <div>
-                        <p>Select the number of replays allowed per question:</p>
+                        <p data-i18n="selectReplayCount">Select the number of replays allowed per question:</p>
                         <select id="sameOrDifferentReplayCount">
-                            <option value="1">1 Time</option>
-                            <option value="2">2 Times</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
                             <option value="unlimited" selected>Unlimited</option>
                         </select>
                     </div>
                 </div>
             </div>
             <div style="margin-top: 20px;">
-                <button class="sound-button" id="startSameOrDifferentTest" onclick="startSameOrDifferentTest()">Start Test <i class="fas fa-play"></i></button>
-                <button class="sound-button hidden" id="exitSameOrDifferentTest" onclick="exitTest()" style="position: fixed; bottom: 20px; right: 20px;">Exit Test <i class="fas fa-stop"></i></button>
+                <button class="sound-button" id="startSameOrDifferentTest" onclick="startSameOrDifferentTest()" data-i18n="startTestBtn">Start Test <i class="fas fa-play"></i></button>
+                <button class="sound-button hidden" id="exitSameOrDifferentTest" onclick="exitTest()" style="position: fixed; bottom: 20px; right: 20px;" data-i18n="exitTestBtn">Exit Test <i class="fas fa-stop"></i></button>
             </div>
             <div id="sameOrDifferentProgressBar" class="hidden">
                 <div id="sameOrDifferentProgress"></div>
             </div>
             <div id="pairingMessage" class="hidden">Please listen carefully, now playing...</div>
-            <button id="sameOrDifferentReplayButton" class="sound-button hidden" onclick="replaySameOrDifferent()">Replay Sound <i class="fas fa-redo"></i></button>
+            <button id="sameOrDifferentReplayButton" class="sound-button hidden" onclick="replaySameOrDifferent()" data-i18n="replaySoundBtn">Replay Sound <i class="fas fa-redo"></i></button>
             <div id="sameOrDifferentReplayMessage" style="margin-top: 10px; font-size: 1em; color: #03dac5;"></div>
             <div id="sameOrDifferentButtons" style="margin-top: 20px;"></div>
             <div id="sameOrDifferentResult" style="margin-top: 20px; font-size: 1.5em;"></div>
-            <button id="sameOrDifferentNextButton" class="sound-button hidden" onclick="nextSameOrDifferent()">Next</button>
+            <button id="sameOrDifferentNextButton" class="sound-button hidden" onclick="nextSameOrDifferent()" data-i18n="nextBtn">Next</button>
             <div id="sameOrDifferentFinalResult" class="hidden" style="margin-top: 20px; font-size: 1.5em;"></div>
         </div>
     </div>
 
-     <!-- ABOUT US 页面 -->
+    <!-- ABOUT US 页面 -->
     <div id="about" class="tab-content hidden">
-        <div id="description" class="description-container">
-            <p>
+        <div class="description-container">
+            <p data-i18n="aboutP1">
                 Welcome to Ling Six Sounds Check Online Test! We are committed to helping users worldwide enhance their auditory skills by providing a scientifically validated hearing test tool.
             </p>
-            <p>This project was developed by a cochlear implant user who underwent auditory rehabilitation in the United States and holds a master’s degree in Computer Science. As a developer with hearing impairment, she understands the importance of auditory training and created this online tool to make it easier for more people to assess and improve their ability to distinguish speech sounds.</p>
-            <p>
-                The Ling Six Sounds Test is an internationally recognized fundamental hearing assessment method, used to evaluate the auditory abilities of individuals with hearing loss and assist them in making better use of hearing aids or cochlear implants. This platform integrates modern web technology to provide a more convenient and intuitive testing experience, making it suitable for anyone who needs hearing evaluation or training.
+            <p data-i18n="aboutP2">
+                This project was developed by a cochlear implant user who underwent auditory rehabilitation in the United States and holds a master’s degree in Computer Science. As a developer with hearing impairment, she understands the importance of auditory training and created this online tool to make it easier for more people to assess and improve their ability to distinguish speech sounds.
             </p>
-            <p>We hope this tool proves helpful to you, and we welcome your feedback. If you are interested in this project, feel free to contact us!</p>
-            <p style="text-align: center; margin-top: 40px; font-size: 1.5em; color: #bb86fc;">
+            <p data-i18n="aboutP3">
+                The Ling Six Sounds Test is an internationally recognized fundamental hearing assessment method, used to evaluate the auditory abilities of individuals with hearing loss and assist them in making better use of hearing aids or cochlear implants. This platform integrates modern web technology to provide a more convenient and intuitive testing experience.
+            </p>
+            <p data-i18n="aboutP4">
+                We hope this tool proves helpful to you, and we welcome your feedback. If you are interested in this project, feel free to contact us!
+            </p>
+            <p style="text-align: center; margin-top: 40px; font-size: 1.5em; color: #bb86fc;" data-i18n="aboutP5">
                 Would you like to try?
             </p>
             <div class="home-buttons">
-                <button class="home-button" onclick="showTab('practice')">Go to Practice</button>
-                <button class="home-button" onclick="showTab('test')">Go to Test</button>
+                <button class="home-button" onclick="showTab('practice')" data-i18n="goPractice">Go to Practice</button>
+                <button class="home-button" onclick="showTab('test')" data-i18n="goTest">Go to Test</button>
             </div>
         </div>
     </div>
 
+    <!-- CONTACT 页面 -->
     <div id="contact" class="tab-content hidden">
-        <div id="description" class="description-container"></div>
-            <h2>Contact Us</h2>
-            <p>If you have any questions or feedback, feel free to reach out to us via the form below or email us at <a href="mailto:lingsixsoundsonlinetest@gmail.com" style="color: #bb86fc;">lingsixsoundsonlinetest@gmail.com</a>.</p>
-                <div class="contact-form">
-                    <form action="mailto:lingsixsoundsonlinetest@gmail.com" method="post" enctype="text/plain">
-                        <input type="text" name="name" placeholder="Your Name" required>
-                        <input type="email" name="email" placeholder="Your Email" required>
-                        <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
-                        <button type="submit">Send Message</button>
-                    </form>
-                </div>
+        <div class="description-container">
+            <h2 data-i18n="contactTitle">Contact Us</h2>
+            <p data-i18n="contactP1">
+                If you have any questions or feedback, feel free to reach out to us via the form below or email us at 
+                <a href="mailto:lingsixsoundsonlinetest@gmail.com" style="color: #bb86fc;">lingsixsoundsonlinetest@gmail.com</a>.
+            </p>
+            <div class="contact-form">
+                <!-- 这里使用 onsubmit 指向自己的邮箱只是一个简单示例，实际应用通常需要后台处理 -->
+                <form action="mailto:lingsixsoundsonlinetest@gmail.com" method="post" enctype="text/plain">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+                    <button type="submit" data-i18n="sendMessageBtn">Send Message</button>
+                </form>
+            </div>
         </div>
     </div>
 
-    <div id="playingMessage" class="hidden">Please listen carefully, now playing...</div>
+    <!-- 当前播放提示 -->
+    <div id="playingMessage" class="hidden" data-i18n="playingMessage">Please listen carefully, now playing...</div>
+
+    <!-- 页脚 -->
     <footer class="footer">
-        <p>&copy; 2025 Ling Six Sounds Check Online Test. All rights reserved. | <a href="privacy.html" style="color: #bb86fc;">Privacy Policy</a></p>
+        <p>&copy; 2025 Ling Six Sounds Check Online Test. 
+            <span data-i18n="footerRights">All rights reserved.</span> 
+            | <a href="privacy.html" style="color: #bb86fc;" data-i18n="footerPrivacy">Privacy Policy</a>
+        </p>
     </footer>
 
     <script>
+        //===========================//
+        //  1. 语言字典 translations
+        //===========================//
+
+        // 这里存放所有 data-i18n 对应的中英文文本
+        // key 要和 HTML 中 data-i18n 的属性值一一对应
+        // 每个 key 下有 en 和 cn 两个字段
+        const translations = {
+            pageTitle: {
+                en: "Ling Six Sounds Check Online Test | Improve Your Hearing Skills",
+                cn: "林氏六音听力在线测试 | 提升您的听力技能"
+            },
+            navHome: {
+                en: "Home",
+                cn: "首页"
+            },
+            navPractice: {
+                en: "Practice",
+                cn: "练习"
+            },
+            navTest: {
+                en: "Test",
+                cn: "测试"
+            },
+            navAbout: {
+                en: "About",
+                cn: "关于我们"
+            },
+            navContact: {
+                en: "Contact",
+                cn: "联系我们"
+            },
+            mainTitle: {
+                en: "Ling Six Sounds Check Online Test",
+                cn: "林氏六音听力在线测试"
+            },
+            homeSubtitle: {
+                en: "What is the Ling Six Sounds Test?",
+                cn: "什么是 林氏六音测试？"
+            },
+            homeP1: {
+                en: "The Ling Six Sounds Check is a simple yet effective tool used to assess an individual's ability to hear and distinguish a range of speech frequencies essential for understanding spoken language. It involves six distinct sounds: \"ah,\" \"ee,\" \"oo,\" \"sh,\" \"s,\" and \"mm,\" which represent low to high frequencies of speech.",
+                cn: "林氏六音测试是一种简单但有效的工具，用于评估一个人是否能听辨理解口语所需的各种语音频率。该测试包含六种声音：“ah”、“ee”、“oo”、“sh”、“s”、“mm”，代表从低频到高频。"
+            },
+            homeP2: {
+                en: "This test is widely used in audiology to assess hearing loss and the effectiveness of hearing aids or cochlear implants.",
+                cn: "此测试在听力学中被广泛用于评估听力损失，以及助听器或人工耳蜗的有效性。"
+            },
+            homeP3: {
+                en: "Welcome to the Ling Six Sounds Check Online version! This interactive platform allows you to practice and test your hearing abilities conveniently from anywhere. We hope you enjoy using this tool and find it helpful in improving your auditory skills.",
+                cn: "欢迎使用 林氏六音在线测试！这个交互式平台让您可以在任何地方方便地练习并测试自己的听力。我们希望您在使用过程中感到满意，并能帮助您提升听觉技能。"
+            },
+            homeP4: {
+                en: "Would you like to try?",
+                cn: "要不要试试？"
+            },
+            goPractice: {
+                en: "Go to Practice",
+                cn: "前往练习"
+            },
+            goTest: {
+                en: "Go to Test",
+                cn: "前往测试"
+            },
+            // Practice部分
+            practiceSelectMode: {
+                en: "Please select a practice mode:",
+                cn: "请选择练习模式："
+            },
+            practiceManualOption: {
+                en: "Manual Mode",
+                cn: "手动模式"
+            },
+            practiceLoopOption: {
+                en: "Loop Mode",
+                cn: "循环模式"
+            },
+            practiceManualInstr: {
+                en: "Click on each button to listen to a Ling Six Sound.",
+                cn: "点击每个按钮以收听林氏六音。"
+            },
+            playAh: {
+                en: 'Play "ah"',
+                cn: '播放“ah”'
+            },
+            playEe: {
+                en: 'Play "ee"',
+                cn: '播放“ee”'
+            },
+            playOo: {
+                en: 'Play "oo"',
+                cn: '播放“oo”'
+            },
+            playSh: {
+                en: 'Play "sh"',
+                cn: '播放“sh”'
+            },
+            playS: {
+                en: 'Play "s"',
+                cn: '播放“s”'
+            },
+            playMm: {
+                en: 'Play "mm"',
+                cn: '播放“mm”'
+            },
+            practiceLoopInstr: {
+                en: "The system will randomly play the six sounds. Please listen carefully.",
+                cn: "系统将随机播放六种声音，请认真聆听。"
+            },
+            startLoop: {
+                en: "Start Loop Mode",
+                cn: "开始循环模式"
+            },
+            stopLoop: {
+                en: "Stop Loop Mode",
+                cn: "停止循环模式"
+            },
+            // Test部分
+            testSelectType: {
+                en: "Select the type of test:",
+                cn: "请选择测试类型："
+            },
+            testTypePlaceholder: {
+                en: "Select test type",
+                cn: "请选择测试类型"
+            },
+            testTypeMultipleChoice: {
+                en: "Multiple Choice",
+                cn: "多项选择"
+            },
+            testTypeSameOrDifferent: {
+                en: "Same or Different",
+                cn: "相同或不同"
+            },
+            selectOptionCount: {
+                en: "Select the number of options for the test:",
+                cn: "选择测试选项数量："
+            },
+            selectQuestionCount: {
+                en: "Select the number of questions:",
+                cn: "选择题目数量："
+            },
+            selectReplayCount: {
+                en: "Select the number of replays allowed per question:",
+                cn: "选择每题可重播的次数："
+            },
+            startTestBtn: {
+                en: "Start Test",
+                cn: "开始测试"
+            },
+            exitTestBtn: {
+                en: "Exit Test",
+                cn: "退出测试"
+            },
+            replaySoundBtn: {
+                en: "Replay Sound",
+                cn: "重播声音"
+            },
+            nextBtn: {
+                en: "Next",
+                cn: "下一题"
+            },
+            playingMessage: {
+                en: "Please listen carefully, now playing...",
+                cn: "请仔细聆听，正在播放..."
+            },
+            footerRights: {
+                en: "All rights reserved.",
+                cn: "版权所有。"
+            },
+            footerPrivacy: {
+                en: "Privacy Policy",
+                cn: "隐私政策"
+            },
+            // About 部分
+            aboutP1: {
+                en: "Welcome to Ling Six Sounds Check Online Test! We are committed to helping users worldwide enhance their auditory skills by providing a scientifically validated hearing test tool.",
+                cn: "欢迎使用林氏六音在线测试！我们致力于为全球用户提供科学验证的听力测试工具，帮助他们提升听觉能力。"
+            },
+            aboutP2: {
+                en: "This project was developed by a bimodal hearing device user (one ear with a hearing aid and the other with a cochlear implant) who underwent auditory rehabilitation in the United States and holds a master’s degree in Computer Science. As a developer with hearing impairment, she understands the importance of auditory training and created this online tool to make it easier for more people to assess and improve their ability to distinguish speech sounds.",
+                cn: "本项目由一位双模式听力设备佩戴者（一耳使用助听器，另一耳植入人工耳蜗）开发。她曾在美国接受听力康复治疗，并拥有计算机科学硕士学位。作为一名有听力障碍的开发者，她深知听觉训练的重要性，因此创建了这个在线工具，帮助更多人评估并提升对语音音素的分辨能力。"
+            },
+            aboutP3: {
+                en: "The Ling Six Sounds Test is an internationally recognized fundamental hearing assessment method, used to evaluate the auditory abilities of individuals with hearing loss and assist them in making better use of hearing aids or cochlear implants. This platform integrates modern web technology to provide a more convenient and intuitive testing experience, making it suitable for anyone who needs hearing evaluation or training.",
+                cn: "林氏六音测试是一种在国际范围内广泛认可的基础听力评估方法，主要用于评估听力损失人群的听觉能力，并帮助他们更好地使用助听器或人工耳蜗。该平台融合了现代网络技术，为使用者提供了更便捷、直观的测试体验，适合任何需要听力评估或训练的人群。"
+            },
+            aboutP4: {
+                en: "We hope this tool proves helpful to you, and we welcome your feedback. If you are interested in this project, feel free to contact us!",
+                cn: "我们希望这个工具能对您有所帮助，也非常欢迎您提供反馈。如果您对本项目感兴趣，欢迎随时与我们联系！"
+            },
+            aboutP5: {
+                en: "Would you like to try?",
+                cn: "要不要试试？"
+            },
+            // Contact
+            contactTitle: {
+                en: "Contact Us",
+                cn: "联系我们"
+            },
+            contactP1: {
+                en: "If you have any questions or feedback, feel free to reach out to us via the form below or email us at",
+                cn: "如果您有任何问题或意见，可以通过下方表单或发送邮件联系我们"
+            },
+            sendMessageBtn: {
+                en: "Send Message",
+                cn: "发送信息"
+            }
+        };
+
+        //===========================//
+        //  2. 实现语言切换逻辑
+        //===========================//
+        function switchLanguage() {
+            const selectedLang = document.getElementById("languageSelector").value;
+            
+            // 遍历所有带有 data-i18n 属性的元素
+            document.querySelectorAll("[data-i18n]").forEach(el => {
+                const key = el.getAttribute("data-i18n");
+                if (translations[key] && translations[key][selectedLang]) {
+                    // 更新文本内容
+                    el.textContent = translations[key][selectedLang];
+                }
+            });
+
+            // 额外处理：如果你想更新 <title> 或 <meta>，需要单独修改
+            // 例如：
+            const titleKey = "pageTitle";
+            if (translations[titleKey][selectedLang]) {
+                document.title = translations[titleKey][selectedLang];
+            }
+
+            // 额外处理输入框 placeholder
+            const nameInput = document.querySelector("input[name='name']");
+            if (nameInput) {
+                if (selectedLang === "cn") {
+                    nameInput.placeholder = "您的姓名";
+                } else {
+                    nameInput.placeholder = "Your Name";
+                }
+            }
+            const emailInput = document.querySelector("input[name='email']");
+            if (emailInput) {
+                if (selectedLang === "cn") {
+                    emailInput.placeholder = "您的邮箱";
+                } else {
+                    emailInput.placeholder = "Your Email";
+                }
+            }
+            const messageTextarea = document.querySelector("textarea[name='message']");
+            if (messageTextarea) {
+                if (selectedLang === "cn") {
+                    messageTextarea.placeholder = "您的留言";
+                } else {
+                    messageTextarea.placeholder = "Your Message";
+                }
+            }
+        }
+
+        //===========================//
+        //  3. 下面是你原先的功能逻辑
+        //===========================//
+
         // 声音列表
         const sounds = ['ah', 'ee', 'oo', 'sh', 's', 'mm'];
         let correctSound = '';
@@ -552,7 +864,6 @@
         let isLooping = false;
         let maxReplays = 'unlimited';
         let replayUsed = 0;
-        // 添加一个状态变量，指示是否可以显示重播按钮
         let canReplay = false;
 
         // Same or Different 相关变量
@@ -562,7 +873,6 @@
         let sameOrDifferentReplayUsed = 0;
         let sameOrDifferentCorrectAnswers = 0;
         let currentSoundPair = [];
-        // 添加一个状态变量，指示是否可以显示重播按钮
         let canReplaySameOrDifferent = false;
 
         function playSound(sound, callback) {
@@ -580,14 +890,13 @@
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
             document.getElementById(tabId).classList.remove('hidden');
-            document.querySelector(`.nav-item[onclick="showTab('${tabId}')"]`).classList.add('active');
-
-            // 如果是 Home 页面，显示描述
-            if (tabId === 'home') {
-                document.getElementById('description').style.display = 'block';
-            } else {
-                document.getElementById('description').style.display = 'none';
-            }
+            // 给当前点击的菜单项加上 active
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(i => {
+                if (i.getAttribute('onclick') === `showTab('${tabId}')`) {
+                    i.classList.add('active');
+                }
+            });
 
             // 当点击 Test 菜单时，重置测试页面
             if (tabId === 'test') {
@@ -671,7 +980,7 @@
             });
         }
 
-        // 当选择测试类型时，显示对应的测试设置
+        // 监听选择测试类型
         document.getElementById('testType').addEventListener('change', function () {
             const testType = this.value;
             document.getElementById('multipleChoiceTest').classList.add('hidden');
@@ -684,7 +993,7 @@
             }
         });
 
-        // Multiple Choice 测试相关函数
+        // Multiple Choice 测试
         function startTest() {
             const optionCount = parseInt(document.getElementById('optionCount').value);
             totalQuestions = parseInt(document.getElementById('questionCount').value);
@@ -696,10 +1005,8 @@
             document.getElementById('finalResult').classList.add('hidden');
             document.getElementById('startTest').classList.add('hidden');
             document.getElementById('exitTest').classList.remove('hidden');
-            // 隐藏测试类型选择和测试设置
             document.getElementById('testTypeSelection').classList.add('hidden');
             document.getElementById('testSettings').classList.add('hidden');
-            // 显示当前测试类型
             document.getElementById('currentTestType').textContent = 'You are currently taking the Multiple Choice test.';
             nextQuestion();
         }
@@ -714,13 +1021,13 @@
                 return;
             }
             currentQuestion++;
-            replayUsed = 0; // 重置已使用的重播次数
-            document.getElementById('replayMessage').textContent = ''; // 清除重播消息
+            replayUsed = 0;
+            document.getElementById('replayMessage').textContent = '';
             document.getElementById('resultMessage').innerHTML = '';
             document.getElementById('nextButton').classList.add('hidden');
             document.getElementById('replayButton').classList.add('hidden');
-            document.getElementById('replayButton').disabled = false; // 重新启用重播按钮
-            canReplay = true; // 允许重播
+            document.getElementById('replayButton').disabled = false;
+            canReplay = true;
             updateProgress();
             generateQuestion();
         }
@@ -758,14 +1065,14 @@
                     replayUsed++;
                     const attemptsLeft = allowedReplays - replayUsed;
                     if (attemptsLeft > 0) {
-                        replayMessage.style.color = '#03dac5'; // 绿色
+                        replayMessage.style.color = '#03dac5'; 
                         replayMessage.textContent = `You have ${attemptsLeft} replay attempt${attemptsLeft > 1 ? 's' : ''} remaining.`;
                     } else {
-                        replayMessage.style.color = '#cf6679'; // 红色
+                        replayMessage.style.color = '#cf6679';
                         replayMessage.textContent = 'You have no replay attempts remaining.';
                     }
                 } else {
-                    replayMessage.style.color = '#cf6679'; // 红色
+                    replayMessage.style.color = '#cf6679';
                     replayMessage.textContent = 'Your replay attempts have been used up.';
                 }
             }
@@ -773,22 +1080,20 @@
 
         function checkAnswer(selectedSound) {
             const resultMessage = document.getElementById('resultMessage');
-            // 无论正确与否，隐藏重播按钮
             document.getElementById('replayButton').classList.add('hidden');
-            canReplay = false; // 禁止重播
-            document.getElementById('replayMessage').textContent = ''; // 清除重播消息
+            canReplay = false;
+            document.getElementById('replayMessage').textContent = '';
+
             if (selectedSound === correctSound) {
                 resultMessage.textContent = 'Correct!';
-                resultMessage.style.color = '#03dac5'; /* 绿色 */
+                resultMessage.style.color = '#03dac5';
                 correctAnswers++;
             } else {
                 resultMessage.innerHTML = `You chose "${selectedSound}" <button class="small-button" onclick="playSound('${selectedSound}')">Play <i class="fas fa-play"></i></button>, the correct answer was "${correctSound}" <button class="small-button" onclick="playSound('${correctSound}')">Play <i class="fas fa-play"></i></button>.`;
-                resultMessage.style.color = '#cf6679'; /* 红色 */
+                resultMessage.style.color = '#cf6679';
                 incorrectCounts[correctSound]++;
-                // 在提示消息下方添加一句话
                 resultMessage.innerHTML += '<br><span style="font-size: 0.9em;">You can click the play buttons above to compare.</span>';
             }
-            // 禁用所有按钮
             document.querySelectorAll('#testButtons .sound-button').forEach(button => button.disabled = true);
             document.getElementById('nextButton').classList.remove('hidden');
         }
@@ -810,7 +1115,7 @@
             document.getElementById('exitTest').classList.add('hidden');
         }
 
-        // Same or Different 测试相关函数
+        // Same or Different
         function startSameOrDifferentTest() {
             sameOrDifferentQuestions = parseInt(document.getElementById('sameOrDifferentQuestionCount').value);
             sameOrDifferentMaxReplays = document.getElementById('sameOrDifferentReplayCount').value;
@@ -820,10 +1125,8 @@
             document.getElementById('sameOrDifferentFinalResult').classList.add('hidden');
             document.getElementById('startSameOrDifferentTest').classList.add('hidden');
             document.getElementById('exitSameOrDifferentTest').classList.remove('hidden');
-            // 隐藏测试类型选择和测试设置
             document.getElementById('testTypeSelection').classList.add('hidden');
             document.getElementById('sameOrDifferentSettings').classList.add('hidden');
-            // 显示当前测试类型
             document.getElementById('currentTestTypeSameOrDifferent').textContent = 'You are currently taking the Same or Different test.';
             nextSameOrDifferent();
         }
@@ -834,13 +1137,13 @@
                 return;
             }
             sameOrDifferentCurrentQuestion++;
-            sameOrDifferentReplayUsed = 0; // 重置已使用的重播次数
-            document.getElementById('sameOrDifferentReplayMessage').textContent = ''; // 清除重播消息
+            sameOrDifferentReplayUsed = 0;
+            document.getElementById('sameOrDifferentReplayMessage').textContent = '';
             document.getElementById('sameOrDifferentResult').textContent = '';
             document.getElementById('sameOrDifferentNextButton').classList.add('hidden');
             document.getElementById('sameOrDifferentReplayButton').classList.add('hidden');
-            document.getElementById('sameOrDifferentReplayButton').disabled = false; // 重新启用重播按钮
-            canReplaySameOrDifferent = true; // 允许重播
+            document.getElementById('sameOrDifferentReplayButton').disabled = false;
+            canReplaySameOrDifferent = true;
             updateSameOrDifferentProgress();
             generateSameOrDifferentQuestion();
         }
@@ -884,14 +1187,14 @@
                     sameOrDifferentReplayUsed++;
                     const attemptsLeft = allowedReplays - sameOrDifferentReplayUsed;
                     if (attemptsLeft > 0) {
-                        replayMessage.style.color = '#03dac5'; // 绿色
+                        replayMessage.style.color = '#03dac5';
                         replayMessage.textContent = `You have ${attemptsLeft} replay attempt${attemptsLeft > 1 ? 's' : ''} remaining.`;
                     } else {
-                        replayMessage.style.color = '#cf6679'; // 红色
+                        replayMessage.style.color = '#cf6679';
                         replayMessage.textContent = 'You have no replay attempts remaining.';
                     }
                 } else {
-                    replayMessage.style.color = '#cf6679'; // 红色
+                    replayMessage.style.color = '#cf6679';
                     replayMessage.textContent = 'Your replay attempts have been used up.';
                 }
             }
@@ -911,17 +1214,17 @@
 
         function checkSameOrDifferent(isSame) {
             const resultMessage = document.getElementById('sameOrDifferentResult');
-            // 无论正确与否，隐藏重播按钮
             document.getElementById('sameOrDifferentReplayButton').classList.add('hidden');
-            canReplaySameOrDifferent = false; // 禁止重播
-            document.getElementById('sameOrDifferentReplayMessage').textContent = ''; // 清除重播消息
-            if ((currentSoundPair[0] === currentSoundPair[1] && isSame) || (currentSoundPair[0] !== currentSoundPair[1] && !isSame)) {
+            canReplaySameOrDifferent = false;
+            document.getElementById('sameOrDifferentReplayMessage').textContent = '';
+            if ((currentSoundPair[0] === currentSoundPair[1] && isSame) ||
+                (currentSoundPair[0] !== currentSoundPair[1] && !isSame)) {
                 resultMessage.textContent = 'Correct!';
-                resultMessage.style.color = '#03dac5'; /* 绿色 */
+                resultMessage.style.color = '#03dac5';
                 sameOrDifferentCorrectAnswers++;
             } else {
                 resultMessage.textContent = 'Incorrect!';
-                resultMessage.style.color = '#cf6679'; /* 红色 */
+                resultMessage.style.color = '#cf6679';
             }
             document.getElementById('sameOrDifferentNextButton').classList.remove('hidden');
             document.getElementById('sameOrDifferentButtons').innerHTML = '';
@@ -942,7 +1245,7 @@
             document.getElementById('exitSameOrDifferentTest').classList.add('hidden');
         }
 
-        // 页面加载时显示首页
+        // 页面加载完成后默认显示 Home 标签
         document.addEventListener('DOMContentLoaded', () => {
             showTab('home');
         });
